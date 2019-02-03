@@ -20,26 +20,27 @@ class RegistrationPersoFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('plainPassword', null)
+            ->add('email', EmailType::class)
+            ->add('name', null)
+            ->add('lastname', null)
+            ->add('password', null)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' =>"user",
-            'csrf_token_id' => 'registration',
-        ));
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'fos_user_registration';
+        return 'registration';
     }
 
 
