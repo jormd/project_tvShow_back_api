@@ -6,13 +6,18 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "friendsofsymfony/rest-bundle": "^2.5",
+        "friendsofsymfony/user-bundle": "~2.0",
         "jms/serializer-bundle": "^2.4",
         "phpunit/phpunit": "^7.5",
+        "symfony/browser-kit": "4.2.*",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",
         "symfony/flex": "^1.1",
+        "symfony/form": "4.2.*",
         "symfony/framework-bundle": "4.2.*",
         "symfony/orm-pack": "^1.0",
+        "symfony/swiftmailer-bundle": "^3.2",
+        "symfony/translation": "4.2.*",
         "symfony/yaml": "4.2.*"
     },
     "config": {
