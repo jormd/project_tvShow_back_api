@@ -12,11 +12,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
+use App\Security\LoginFormAuthentificatorAuthenticator;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class UserController extends Controller
 {
@@ -37,6 +39,13 @@ class UserController extends Controller
                 $user = new User();
 
                 $user = $userData->extract($user);
+
+                if(!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^=!*()@%&]).{6,}$/', $form->get('password')->getData())){
+                    return new JsonResponse([
+                        'code' => 'error',
+                        'message' => 'MDP pas sécuriser'
+                    ]);
+                }
 
                 $user->setPassword($passwordEncoder->encodePassword(
                     $user,
@@ -66,8 +75,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function authAction(Request $request)
+    /**
+     * @Rest\Post("/api/connection")
+     * @param Request $request
+     * https://symfony.com/doc/current/security/guard_authentication.html
+     */
+    public function authAction(Request $request, LoginFormAuthentificatorAuthenticator $authenticator, GuardAuthenticatorHandler $guardHandler, UserPasswordEncoderInterface $passwordEncoder)
     {
+        if ($request->isMethod(Request::METHOD_POST)) {
 
+            /** @var User $user */
+            $user = $this->getDoctrine()->getManager()->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
+
+            if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
+                return $guardHandler->authenticateUserAndHandleSuccess(
+                    $user,          // the User object you just created
+                    $request,
+                    $authenticator, // authenticator whose onAuthenticationSuccess you want to use
+                    'main'          // the name of your firewall in security.yaml
+                );
+            }
+
+        }
+
+        return new JsonResponse([
+            'code' => 'error',
+            'message' => 'Vous ne pouvez pas vous connecté'
+        ]);
     }
 }

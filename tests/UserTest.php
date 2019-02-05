@@ -10,13 +10,12 @@ namespace App\Tests;
 
 
 use App\Controller\UserController;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
-class UserTest extends TestCase
+class UserTest extends WebTestCase
 {
 
     /** @var UserController */
@@ -25,10 +24,27 @@ class UserTest extends TestCase
     /** @var Request */
     private $request;
 
+    private $client;
+
+    private $encoder;
+
     protected function setUp()
     {
+        $this->client = self::createClient();
         $this->userController = new UserController();
         $this->request = new Request();
+        $this->userController->setContainer($this->client->getContainer());
+        $this->encoder = $this->createMock(UserPasswordEncoder::class);
+        $this->encoder->method('encodePassword')->willReturn('test');
+
+
+        $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
+
+        // Run the schema update tool using our entity metadata
+        $metadatas = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropDatabase();
+        $schemaTool->updateSchema($metadatas);
     }
 
     /**
@@ -38,32 +54,62 @@ class UserTest extends TestCase
     {
         $this->request->setMethod(Request::METHOD_GET);
 
-        $json = $this->userController->createUserAction($this->request, new UserPasswordEncoder(new EncoderFactory([])));
+        $json = $this->userController->createUserAction($this->request, $this->encoder);
 
         $res = json_decode($json->getContent(), true);
 
         $this->assertEquals("error", $res["code"]);
+        $this->assertEquals("Vous n'avez pas accès à la création d'utilisateur", $res["message"]);
     }
 
+    /**
+     * Test de la création user qui contient bien tout les paramètre
+     */
     public function testCreateUserWithPost()
     {
-        $mock = $this->createMock(UserController::class);
-        $mock->method('createUserAction')
-            ->willReturn(['code' => 'success']);
-
         $this->request->setMethod(Request::METHOD_POST);
 
         $params['registration_perso_form'] = [
             'email' => 'test@gmail.com',
             'name' => 'test',
             'lastname' => 'test',
-            'password' => "test"
+            'password' => '1aE#kajddssd'
         ];
 
         $this->request->request->add($params);
 
-        $res = $mock->createUserAction($this->request, new UserPasswordEncoder(new EncoderFactory([])));
+        $json = $this->userController->createUserAction($this->request, $this->encoder);
+
+        $res = json_decode($json->getContent(), true);
+
 
         $this->assertEquals("success", $res['code']);
+        $this->assertEquals("l'utilisateur à bien été crée", $res['message']);
+    }
+
+    public function testCreateUserWithPostAndError()
+    {
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $params['registration_perso_form'] = [
+            'email' => 'test@gmail.com',
+            'name' => 'test',
+            'lastname' => 'test',
+            'password' => 'test'
+        ];
+
+        $this->request->request->add($params);
+
+        $mock = $this->createMock(UserPasswordEncoder::class);
+        $mock->method('encodePassword')->willReturn('test');
+
+
+        $json = $this->userController->createUserAction($this->request, $this->encoder);
+
+        $res = json_decode($json->getContent(), true);
+
+
+        $this->assertEquals("error", $res['code']);
+        $this->assertEquals("MDP pas sécuriser", $res['message']);
     }
 }
