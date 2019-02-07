@@ -10,6 +10,7 @@ namespace App\Tests;
 
 
 use App\Controller\UserController;
+use App\Entity\User;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,4 +113,18 @@ class UserTest extends WebTestCase
         $this->assertEquals("error", $res['code']);
         $this->assertEquals("MDP pas sécuriser", $res['message']);
     }
+//
+//    public function testGetTokenUser()
+//    {
+//        $user = new User();
+//        $user->setName('aaa');
+//        $user->setLastname('aaa');
+//        $user->setEmail('aaa@zae.de');
+//        $user->setPassword('zezaeesqdaaa');
+//
+//        $res = $this->userController->getTokenUser($user);
+//
+//        $this->assertIsString($res);
+//        $this->assertTrue(count($res) > 0);
+//    }
 }

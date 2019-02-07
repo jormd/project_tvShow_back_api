@@ -90,7 +90,9 @@ class LoginFormAuthentificatorAuthenticator extends AbstractFormLoginAuthenticat
        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
         return new JsonResponse([
             'code' => 'succes',
-            'message' => 'vous êtez connecter'
+            'message' => 'vous êtez connecter',
+            'token' => $token->getUsername(),
+            'tokenJWT' => $request->request->get('tokenJWT')
         ]);
     }
 

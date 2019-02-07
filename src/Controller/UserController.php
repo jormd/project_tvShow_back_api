@@ -14,6 +14,7 @@ use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
 use App\Security\LoginFormAuthentificatorAuthenticator;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,7 +77,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Rest\Post("/api/connection")
+     * @Rest\Post("/api/login")
      * @param Request $request
      * https://symfony.com/doc/current/security/guard_authentication.html
      */
@@ -88,6 +89,9 @@ class UserController extends Controller
             $user = $this->getDoctrine()->getManager()->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
 
             if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
+
+                $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
+
                 return $guardHandler->authenticateUserAndHandleSuccess(
                     $user,          // the User object you just created
                     $request,
@@ -96,11 +100,23 @@ class UserController extends Controller
                 );
             }
 
+            return new JsonResponse([
+                'code' => 'error',
+                'message' => 'Erreur connexion, le mdp est incorret ou l\'utilisateur n\'existe pas'
+            ]);
         }
 
         return new JsonResponse([
             'code' => 'error',
             'message' => 'Vous ne pouvez pas vous connecté'
         ]);
+    }
+
+    public function getTokenUser(User $user)
+    {
+        $jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
+
+
+        return $jwtManager->create($user);
     }
 }
