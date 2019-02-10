@@ -29,15 +29,15 @@ class SearchTvShow extends Controller
     private function callApi($route, $data = null)
     {
         /** @var ExternalApi $externalAPI */
-        $externalAPI = $this->getDoctrine()->getManager()->getRepository(ExternalApi::class)->findAll();
+        $externalAPI = $this->getDoctrine()->getManager()->getRepository(ExternalApi::class)->findAll()[0];
 
         $curl = curl_init();
 
         if(!is_null($data)){
-            curl_setopt($curl, CURLOPT_URL, $externalAPI[0]->getUrl().$route."?".$data[0][0]."=".$data[0][1]);
+            curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route."?".$data[0][0]."=".$data[0][1]);
         }
         else{
-            curl_setopt($curl, CURLOPT_URL, $externalAPI[0]->getUrl().$route);
+            curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route);
 
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
