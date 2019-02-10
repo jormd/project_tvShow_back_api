@@ -10,7 +10,6 @@ namespace App\Tests;
 
 
 use App\Controller\UserController;
-use App\Entity\User;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
