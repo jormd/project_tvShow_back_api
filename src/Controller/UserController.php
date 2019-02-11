@@ -14,7 +14,6 @@ use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
 use App\Security\LoginFormAuthentificatorAuthenticator;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
