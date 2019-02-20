@@ -51,9 +51,7 @@ class User implements UserInterface
     private $tokenApi;
 
     /**
-     * @ORM\ManyToMany(targetEntity="TvShow", mappedBy="users")
-     * @ORM\JoinTable(name="users_TvShows")
-     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="TvShow", mappedBy="users", cascade={"all"})
      */
     private $tvShows;
 

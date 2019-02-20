@@ -87,16 +87,18 @@ class UserController extends Controller
             /** @var User $user */
             $user = $this->getDoctrine()->getManager()->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
 
-            if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
+            if(!is_null($user)){
+                if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
 
-                $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
+                    $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
 
-                return $guardHandler->authenticateUserAndHandleSuccess(
-                    $user,          // the User object you just created
-                    $request,
-                    $authenticator, // authenticator whose onAuthenticationSuccess you want to use
-                    'main'          // the name of your firewall in security.yaml
-                );
+                    return $guardHandler->authenticateUserAndHandleSuccess(
+                        $user,          // the User object you just created
+                        $request,
+                        $authenticator, // authenticator whose onAuthenticationSuccess you want to use
+                        'main'          // the name of your firewall in security.yaml
+                    );
+                }
             }
 
             return new JsonResponse([

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table()
  */
-class tvShow
+class TvShow
 {
     /**
      * @ORM\Id()
@@ -37,8 +37,7 @@ class tvShow
     private $idApi;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="tvShows")
-     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="tvShows", cascade={"all"})
      */
     private $users;
 
@@ -88,6 +87,11 @@ class tvShow
     public function setIdApi(int $idApi): void
     {
         $this->idApi = $idApi;
+    }
+
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     /**
