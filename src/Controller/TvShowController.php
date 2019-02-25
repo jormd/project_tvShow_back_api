@@ -26,9 +26,7 @@ class TvShowController extends Controller
     public function followTvShow(Request $request)
     {
         $serie = $request->get('serie');
-
-        // TODO check si série existe avec l'api
-
+        
         $em = $this->getDoctrine()->getManager();
 
         $tvShow = $em->getRepository(TvShow::class)->findOneBy(['idApi' => $serie['id']]);
@@ -58,8 +56,6 @@ class TvShowController extends Controller
     public function unfollowTvShow(Request $request)
     {
         $serie = $request->get('serie');
-
-        //TODO méthode de recherche d'épisode par id + faire check si la série existe
 
         $em = $this->getDoctrine()->getManager();
 
