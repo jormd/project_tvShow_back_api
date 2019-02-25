@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\TvShow;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,8 @@ class TvShowController extends Controller
     public function followTvShow(Request $request)
     {
         $serie = $request->get('serie');
+        /** @var User $user */
+        $user = $this->getUser();
         
         $em = $this->getDoctrine()->getManager();
 
@@ -37,8 +40,10 @@ class TvShowController extends Controller
             $tvShow->setNom($serie['name']);
         }
 
-        $tvShow->addUser($this->getUser());
+        $tvShow->addUser($user);
+        $user->addTvShow($tvShow);
 
+        $em->persist($user);
         $em->persist($tvShow);
         $em->flush();
 
@@ -57,6 +62,9 @@ class TvShowController extends Controller
     {
         $serie = $request->get('serie');
 
+        /** @var User $user */
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
 
         /** @var TvShow $tvShow */
@@ -68,8 +76,9 @@ class TvShowController extends Controller
                 'content' => 'vous n\'avez pas suivie cette série'
             ]);
         }
-        $tvShow->removeUser($this->getUser());
-        $this->getUser()->removeTvShow($tvShow);
+        $tvShow->removeUser($user);
+        $user->removeTvShow($tvShow);
+        $em->persist($user);
 
         if(count($tvShow->getUsers()) == 0){
             $em->remove($tvShow);

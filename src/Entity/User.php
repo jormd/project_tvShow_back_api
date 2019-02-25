@@ -56,7 +56,7 @@ class User implements UserInterface
     private $tvShows;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Episode", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="Episode", mappedBy="users", cascade={"all"})
      */
     private $episodes;
 
@@ -195,10 +195,7 @@ class User implements UserInterface
         $this->tokenApi = $tokenApi;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getTvShows(): ArrayCollection
+    public function getTvShows()
     {
         return $this->tvShows;
     }

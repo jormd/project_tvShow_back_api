@@ -36,15 +36,17 @@ class Episode
     private $idSerieApi;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="episodes")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="episodes", cascade={"all"})
      */
     private $users;
 
     /**
      * Episode constructor.
      */
-    public function __construct()
+    public function __construct($idEpisodeApi, $idSerieApi)
     {
+        $this->idEpisodeApi = $idEpisodeApi;
+        $this->idSerieApi = $idSerieApi;
         $this->users = new ArrayCollection();
     }
 
@@ -66,28 +68,11 @@ class Episode
 
     /**
      * Utilisation que pendant la création
-     * @param mixed $idEpisodeApi
-     */
-    public function setIdEpisodeApi($idEpisodeApi): void
-    {
-        $this->idEpisodeApi = $idEpisodeApi;
-    }
-
-    /**
-     * Utilisation que pendant la création
      * @return mixed
      */
     public function getIdSerieApi()
     {
         return $this->idSerieApi;
-    }
-
-    /**
-     * @param mixed $idSerieApi
-     */
-    public function setIdSerieApi($idSerieApi): void
-    {
-        $this->idSerieApi = $idSerieApi;
     }
 
     /**
