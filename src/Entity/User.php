@@ -56,11 +56,17 @@ class User implements UserInterface
     private $tvShows;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Episode", mappedBy="users")
+     */
+    private $episodes;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->tvShows = new ArrayCollection();
+        $this->episodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,4 +223,23 @@ class User implements UserInterface
         return $this->tvShows;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEpisodes()
+    {
+        return $this->episodes;
+    }
+
+    public function addEpisode(Episode $episode)
+    {
+        $this->episodes->add($episode);
+        return $this->episodes;
+    }
+
+    public function removeEpisode(Episode $episode)
+    {
+        $this->episodes->removeElement($episode);
+        return $this->episodes;
+    }
 }
