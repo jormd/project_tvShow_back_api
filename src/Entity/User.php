@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,6 +49,19 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private $tokenApi;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="TvShow", mappedBy="users", cascade={"all"})
+     */
+    private $tvShows;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->tvShows = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -175,7 +189,32 @@ class User implements UserInterface
         $this->tokenApi = $tokenApi;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getTvShows(): ArrayCollection
+    {
+        return $this->tvShows;
+    }
 
+    /**
+     * @param TvShow $tvShow
+     * @return ArrayCollection
+     */
+    public function addTvShow(TvShow $tvShow)
+    {
+        $this->tvShows->add($tvShow);
+        return $this->tvShows;
+    }
 
+    /**
+     * @param TvShow $tvShow
+     * @return ArrayCollection
+     */
+    public function removeTvShow(TvShow $tvShow)
+    {
+        $this->tvShows->removeElement($tvShow);
+        return $this->tvShows;
+    }
 
 }

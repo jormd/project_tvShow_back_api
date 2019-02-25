@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
 
-class SearchTvShow extends Controller
+class SearchTvShowController extends Controller
 {
 
     /**

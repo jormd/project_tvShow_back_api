@@ -9,7 +9,7 @@
 namespace App\Tests;
 
 
-use App\Controller\SearchTvShow;
+use App\Controller\SearchTvShowController;
 use App\Entity\ExternalApi;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchTvShowTest extends WebTestCase
 {
-    /** @var SearchTvShow */
+    /** @var SearchTvShowController */
     private $searchTvShow;
 
     protected function setUp()
@@ -38,7 +38,7 @@ class SearchTvShowTest extends WebTestCase
         $entityManager->persist($externalApi);
         $entityManager->flush();
 
-        $this->searchTvShow = new SearchTvShow();
+        $this->searchTvShow = new SearchTvShowController();
         $this->searchTvShow->setContainer($client->getContainer());
     }
 
