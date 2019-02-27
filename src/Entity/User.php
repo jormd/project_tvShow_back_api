@@ -61,12 +61,18 @@ class User implements UserInterface
     private $episodes;
 
     /**
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="user")
+     */
+    private $commentaires;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->tvShows = new ArrayCollection();
         $this->episodes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,15 +234,52 @@ class User implements UserInterface
         return $this->episodes;
     }
 
+    /**
+     * @param Episode $episode
+     * @return ArrayCollection
+     */
     public function addEpisode(Episode $episode)
     {
         $this->episodes->add($episode);
         return $this->episodes;
     }
 
+    /**
+     * @param Episode $episode
+     * @return ArrayCollection
+     */
     public function removeEpisode(Episode $episode)
     {
         $this->episodes->removeElement($episode);
         return $this->episodes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function addCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->add($commentaire);
+        return $this->commentaires;
+    }
+
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function removeCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->remove($commentaire);
+        return $this->commentaires;
+    }
+
 }
