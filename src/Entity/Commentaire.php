@@ -25,12 +25,12 @@ class Commentaire
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Episode", inversedBy="commentaires")
+     * @ORM\ManyToOne(targetEntity="Episode", inversedBy="commentaires", cascade={"all"})
      */
     private $episode;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="commentaires", cascade={"all"})
      */
     private $user;
 
@@ -58,7 +58,7 @@ class Commentaire
     /**
      * @param mixed $episode
      */
-    public function setEpisode($episode): void
+    public function setEpisode($episode)
     {
         $this->episode = $episode;
     }
@@ -74,7 +74,7 @@ class Commentaire
     /**
      * @param mixed $user
      */
-    public function setUser($user): void
+    public function setUser($user)
     {
         $this->user = $user;
     }
@@ -90,7 +90,7 @@ class Commentaire
     /**
      * @param mixed $message
      */
-    public function setMessage($message): void
+    public function setMessage($message)
     {
         $this->message = $message;
     }

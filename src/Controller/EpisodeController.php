@@ -56,7 +56,9 @@ class EpisodeController extends Controller
         }
 
         $episode->addUser($this->getUser());
+        $user->addEpisode($episode);
 
+        $em->persist($user);
         $em->persist($episode);
         $em->flush();
 
