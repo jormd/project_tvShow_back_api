@@ -68,6 +68,11 @@ class EpisodeController extends Controller
         ]);
     }
 
+    /**
+     * @Rest\Post("/api/uncheck/episode")
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function unCheckEpisode(Request $request)
     {
         $episodeReq = $request->get('episode');

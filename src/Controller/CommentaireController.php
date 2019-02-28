@@ -28,7 +28,7 @@ class CommentaireController extends Controller
      */
     public function addCommentaireEpisode(Request $request)
     {
-        $commentaireReq = $request->get('episode');
+        $commentaireReq = $request->get('commentaire');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -63,9 +63,14 @@ class CommentaireController extends Controller
         ]);
     }
 
+    /**
+     * @Rest\Post("/api/commentaire/episode/remove")
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function removeCommentaireEpisode(Request $request)
     {
-        $commentaireReq = $request->get('episode');
+        $commentaireReq = $request->get('commentaire');
 
         $em = $this->getDoctrine()->getManager();
 
