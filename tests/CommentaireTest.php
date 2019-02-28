@@ -69,7 +69,7 @@ class CommentaireTest extends WebTestCase
     public function testAddCommentaireErrorNotEpisode()
     {
         $request = new Request();
-        $request->request->add(['episode' => ['idEpisodeApi' => 192, 'commentaire' => 'girl']]);
+        $request->request->add(['commentaire' => ['idEpisodeApi' => 192, 'commentaire' => 'girl']]);
 
         $json = $this->commentaire->addCommentaireEpisode($request);
         $res = json_decode($json->getContent(), true);
@@ -93,7 +93,7 @@ class CommentaireTest extends WebTestCase
         $this->assertEquals('success', $res['code']);
 
         $request3 = new Request();
-        $request3->request->add(['episode' => ['idEpisodeApi' => 530411, 'commentaire' => 'girl']]);
+        $request3->request->add(['commentaire' => ['idEpisodeApi' => 530411, 'commentaire' => 'girl']]);
 
         $json = $this->commentaire->addCommentaireEpisode($request3);
         $res = json_decode($json->getContent(), true);
@@ -104,7 +104,7 @@ class CommentaireTest extends WebTestCase
     public function testRemoveCommentaireError()
     {
         $request3 = new Request();
-        $request3->request->add(['episode' => ['id' => 1]]);
+        $request3->request->add(['commentaire' => ['id' => 1]]);
 
         $json = $this->commentaire->removeCommentaireEpisode($request3);
         $res = json_decode($json->getContent(), true);
@@ -128,7 +128,7 @@ class CommentaireTest extends WebTestCase
         $this->assertEquals('success', $res['code']);
 
         $request3 = new Request();
-        $request3->request->add(['episode' => ['idEpisodeApi' => 530411, 'commentaire' => 'girl']]);
+        $request3->request->add(['commentaire' => ['idEpisodeApi' => 530411, 'commentaire' => 'girl']]);
 
         $json = $this->commentaire->addCommentaireEpisode($request3);
         $res = json_decode($json->getContent(), true);
@@ -136,7 +136,7 @@ class CommentaireTest extends WebTestCase
         $this->assertEquals('success', $res['code']);
 
         $request4 = new Request();
-        $request4->request->add(['episode' => ['id' => 1]]);
+        $request4->request->add(['commentaire' => ['id' => 1]]);
 
         $json = $this->commentaire->removeCommentaireEpisode($request4);
         $res = json_decode($json->getContent(), true);
