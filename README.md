@@ -15,8 +15,8 @@ Lundi 25 mars :
 - [X] utilisation d'api externe pour la recherche d'information sur les séries
 - [X] suivie de séries (follow, unfollow)
 - [X] recherche de séries
-- [ ] mise en place de check des épisodes
-- [ ] mise en place des commentaires
+- [X] mise en place de check des épisodes
+- [X] mise en place des commentaires
 
 Mardi 23 avril :
 - [ ] Authentification utilisateur:
