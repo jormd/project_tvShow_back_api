@@ -41,6 +41,11 @@ class Episode
     private $users;
 
     /**
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="episode")
+     */
+    private $commentaires;
+
+    /**
      * Episode constructor.
      */
     public function __construct($idEpisodeApi, $idSerieApi)
@@ -48,6 +53,7 @@ class Episode
         $this->idEpisodeApi = $idEpisodeApi;
         $this->idSerieApi = $idSerieApi;
         $this->users = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     /**
@@ -95,5 +101,31 @@ class Episode
         return $this->users;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
 
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function addCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->add($commentaire);
+        return $this->commentaires;
+    }
+
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function removeCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->remove($commentaire);
+        return $this->commentaires;
+    }
 }

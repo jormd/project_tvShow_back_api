@@ -90,7 +90,7 @@ class TvShowController extends Controller
 
         return new JsonResponse([
             'code' => 'success',
-            'content' => 'la série à été ajouter à votre compte'
+            'content' => 'la série à été supprimer de votre compte'
         ]);
     }
 }

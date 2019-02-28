@@ -56,7 +56,9 @@ class EpisodeController extends Controller
         }
 
         $episode->addUser($this->getUser());
+        $user->addEpisode($episode);
 
+        $em->persist($user);
         $em->persist($episode);
         $em->flush();
 
@@ -66,6 +68,11 @@ class EpisodeController extends Controller
         ]);
     }
 
+    /**
+     * @Rest\Post("/api/uncheck/episode")
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function unCheckEpisode(Request $request)
     {
         $episodeReq = $request->get('episode');
