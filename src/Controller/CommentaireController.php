@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Entity\Commentaire;
 use App\Entity\Episode;
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,18 +69,23 @@ class CommentaireController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $commentaire = $em->getRepository(Commentaire::class)->findBy(['id' => $commentaireReq['id'], 'users' => $this->getUser()]);
+        /** @var User $user */
+        $user = $this->getUser();
 
-        if(is_null($commentaire)){
+        $commentaire = $user->getCommentaires()->filter(function ($show) use ($commentaireReq){
+            return $show->getId() == $commentaireReq['id'];
+        });
+
+        if(count($commentaire) == 0){
             return new JsonResponse([
                 'code' => 'error',
-                'content' => 'Vous ne pouvez pas mettre de commentaire si vous n\'avez pas vu l\'épisode'
+                'content' => 'Vous ne pouvez pas supprimer de commentaire si vous n\'avez pas crée'
             ]);
         }
 
-        $this->getUser()->removeCommentaire($commentaire);
+        /** @var Commentaire $commentaire */
+        $commentaire = $commentaire->first();
 
-        $em->persist($this->getUser());
         $em->remove($commentaire);
         $em->flush();
 

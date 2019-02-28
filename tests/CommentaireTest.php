@@ -100,4 +100,47 @@ class CommentaireTest extends WebTestCase
 
         $this->assertEquals('success', $res['code']);
     }
+
+    public function testRemoveCommentaireError()
+    {
+        $request3 = new Request();
+        $request3->request->add(['episode' => ['id' => 1]]);
+
+        $json = $this->commentaire->removeCommentaireEpisode($request3);
+        $res = json_decode($json->getContent(), true);
+
+        $this->assertEquals('error', $res['code']);
+    }
+
+    public function testRemoveCommentaireSuccess()
+    {
+        $request = new Request();
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+
+        $this->tvShow->followTvShow($request);
+
+        $request2 = new Request();
+        $request2->request->add(['episode' => ['idSerie' => 192, 'idEpisode' => 530411]]);
+
+        $json = $this->episode->checkEpisode($request2);
+        $res = json_decode($json->getContent(), true);
+
+        $this->assertEquals('success', $res['code']);
+
+        $request3 = new Request();
+        $request3->request->add(['episode' => ['idEpisodeApi' => 530411, 'commentaire' => 'girl']]);
+
+        $json = $this->commentaire->addCommentaireEpisode($request3);
+        $res = json_decode($json->getContent(), true);
+
+        $this->assertEquals('success', $res['code']);
+
+        $request4 = new Request();
+        $request4->request->add(['episode' => ['id' => 1]]);
+
+        $json = $this->commentaire->removeCommentaireEpisode($request4);
+        $res = json_decode($json->getContent(), true);
+
+        $this->assertEquals('success', $res['code']);
+    }
 }
