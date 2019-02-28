@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,6 +49,31 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private $tokenApi;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="TvShow", mappedBy="users", cascade={"all"})
+     */
+    private $tvShows;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Episode", mappedBy="users", cascade={"all"})
+     */
+    private $episodes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="user")
+     */
+    private $commentaires;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->tvShows = new ArrayCollection();
+        $this->episodes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -175,7 +201,85 @@ class User implements UserInterface
         $this->tokenApi = $tokenApi;
     }
 
+    public function getTvShows()
+    {
+        return $this->tvShows;
+    }
 
+    /**
+     * @param TvShow $tvShow
+     * @return ArrayCollection
+     */
+    public function addTvShow(TvShow $tvShow)
+    {
+        $this->tvShows->add($tvShow);
+        return $this->tvShows;
+    }
 
+    /**
+     * @param TvShow $tvShow
+     * @return ArrayCollection
+     */
+    public function removeTvShow(TvShow $tvShow)
+    {
+        $this->tvShows->removeElement($tvShow);
+        return $this->tvShows;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEpisodes()
+    {
+        return $this->episodes;
+    }
+
+    /**
+     * @param Episode $episode
+     * @return ArrayCollection
+     */
+    public function addEpisode(Episode $episode)
+    {
+        $this->episodes->add($episode);
+        return $this->episodes;
+    }
+
+    /**
+     * @param Episode $episode
+     * @return ArrayCollection
+     */
+    public function removeEpisode(Episode $episode)
+    {
+        $this->episodes->removeElement($episode);
+        return $this->episodes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function addCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->add($commentaire);
+        return $this->commentaires;
+    }
+
+    /**
+     * @param Commentaire $commentaire
+     * @return ArrayCollection
+     */
+    public function removeCommentaire(Commentaire $commentaire)
+    {
+        $this->commentaires->remove($commentaire);
+        return $this->commentaires;
+    }
 
 }
