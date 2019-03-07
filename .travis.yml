@@ -14,8 +14,10 @@ env:
 
 before-install:
 - composer self-update
+
 install:
 - composer install
+
 script:
 - php vendor/bin/phpunit
 
