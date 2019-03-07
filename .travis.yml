@@ -13,11 +13,11 @@ env:
     - secure: lbtL8XdAcDWTNG5rBSAEYsBcRkwHcOEAtuXDd1c56RlRFrx3UGXHxh4zEDhVFwjbZAer0/jzCEe/6Gmlc0S56wJEdOj4C0YjdiNWdX13evP9PTez6vBfV20yDhz8+rpors/8iO9r3sYxufpsbAKDDXQrlp40/5BUQqNHI6kAPZC5N3cCbJRmnwMzFAn9ccGRX83rIcs1NiBNzQboawkXoaCzQT3voP0FS3IkuMODR+uRThlq3sP8LwrX1d2AZZmwuqqUSUN5WcVBj8uWdNb1cM5G7UCbvRHNXAu9++LfpVhHHSWNW8yoY2XBe/TMlw4/TdvjgPMkLp1mK0flmGfEPiQPjtYshoT1Diu744iR1SKKcpI9dKPww8YEPM2DPPRxwj/GSBoX2qGM1U7UeZACUYK8u7GSM3r2h2IiC6RMBuozTRWtfdhSNhXKtGix7lINQYnIsxUJYRtQx8dRdDvYh+kjCD32U633RoEczL+zfUXn1STY83diuPWracQEp5GUk4I6hCeNQj4bXU6N/qfIUlzQe4s+JFne484AEDYzRSVJpvsNj9UzdQTYomvTQcOG0ASYGCRznLoFSYcdD4Zr7mIhV8vIBBuIw7dq/MJCoLl3S+/QL8GT1gT46UK7amrWIDBHUM20xXUSycf4iUEpj//fkSoHS87O/7O3xeREahU=
 
 ## on test juste sur dev et master
-branches:
-  only:
-    - master
-    - develop
-    - deploymentTest
+#branches:
+#  only:
+#    - master
+#    - develop
+#    - deploymentTest
 
 before-install:
 - composer self-update
