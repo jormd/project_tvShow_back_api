@@ -6,7 +6,7 @@ php:
 env:
   - SYMFONY_VERSION="4.2.*"
 
-## on test juste sur dev et master
+## on test juste sur les branch dev et master
 branches:
   only:
     - master
