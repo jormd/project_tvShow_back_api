@@ -17,6 +17,7 @@ branches:
   only:
     - master
     - develop
+    - deploymentTest
 
 before-install:
 - composer self-update
