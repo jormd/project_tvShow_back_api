@@ -23,8 +23,8 @@ jobs:
   include:
     - stage: build docker image
      script:
-        - echo "DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t projectmaster .
         - docker images
-        - docker tag projectmaster DOCKER_USERNAME/projectmaster
-        - docker push DOCKER_USERNAME/projectmaster
+        - docker tag projectmaster $DOCKER_USERNAME/projectmaster
+        - docker push $DOCKER_USERNAME/projectmaster
