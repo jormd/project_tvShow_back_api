@@ -27,3 +27,5 @@ deploy:
   keyfile: ~/project-tvshow-0130c7b9b9cd.json.enc
   project: project-tvshow
   skip_cleanup: true
+  on:
+    branch: develop # ← new!
