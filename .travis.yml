@@ -7,10 +7,11 @@ env:
   - SYMFONY_VERSION="4.2.*"
 
 ## on test juste sur les branch dev et master
-#branches:
-#  only:
-#    - master
-#    - develop
+branches:
+  only:
+    - master
+    - develop
+    - deploymentTest
 
 before-install:
   - composer self-update
