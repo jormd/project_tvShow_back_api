@@ -11,8 +11,6 @@ branches:
   only:
     - master
     - develop
-    - deploymentTest
-    - deployment
 
 before-install:
   - composer self-update
