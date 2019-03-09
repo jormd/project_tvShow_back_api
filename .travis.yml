@@ -29,8 +29,6 @@ before_deploy:
   - docker images
   - docker tag projectmaster $DOCKER_USERNAME/projectmaster
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker push $DOCKER_USERNAME/projectmaster
 
-deploy:
-  provider: script
-  script: docker push $DOCKER_USERNAME/projectmaster
 
