@@ -21,4 +21,4 @@ script:
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - docker build -t $DOCKER_USER/projectmaster .
-  - docker push $DOCKER_USER/projectmaster
+  - docker push $DOCKER_USER/projectmaster:master
