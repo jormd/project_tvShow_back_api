@@ -1,14 +1,12 @@
 language: php
+sudo: required
+services:
+- docker
 php:
 - '7.1'
 env:
   matrix:
   - SYMFONY_VERSION="4.2.*"
-  global:
-  - secure: EOYAsrWZapD0NXmradTlmUBewjzOk2QCuaOa7ahBtBk/wRe5cyOeM05bE2HdVeCrLxMagD4bgrxwzXOYpsiGb5NoVksyeaDwYxO4BZPwJuMahxBgIDSBImqjCc9NFevM64OoOvPgEeYor69ib5JUtck8Fv1BHgZVIa18GJS6DXszm8ygT0E3hyirXru7QnUX9IvYoilEGpLy97fkIz2ZC7IsiVFHok1X4N6Fw0orc7qFI7Y6NpCUgxlIyonaIlgH+7kalgW/rsZM5f3PDA3FL763F60fun0AbVNtN+yPDjQ0QwzOAWAfvS8T9tsxwF8aoH1cwGa30ZtmTEY1EIN/UycrusvY80ZBDqBV9oFd+DDdj1txWJ6HChu7J5NjN/D6O7AVdRkAV1Y77rzyAnaIFOSyOSDLUHtlvAjoa2LWIcO6FlynSq4SwKpqEx94tMd8kAldoSxdAcgkIrMGYireBBsP2q5cJ4hOPnW+HK1UDfMj2i/5KTfOSYWfsNy8wxgs8ywG/s/iEt3bO+bLVL8oqmboG28IKPTqlUBHW2rjiZyWwSdwbAHMqWGw4vyoshycgGDgRyga2SZW7N2BxADwHElpOEzcLrW+6Rx+pXWIOkZK7FpFxVq12G7EqSNvmduZSKJAeTPi/L9VOu9XGu32UIzBnLOZIeYWGnP+7DPwgec=
-  - secure: Ca/D2V7dXs8OvCJVuZvr4LAlvTbnz5FyYtELVlPx1Pvbjq3vxtqqvN7IV50VQHhtNjQFCzYbcJTw/4CoZFTbUBL99zM4wLDD8bzqjwP+42YnNMFw1fOkkuWn7hEcUl9tOXljswP2+oz0yTpdfqVdt5Vv5KaTL8Iv2/6T7SoJ/yihpPPcR4nqc/ZSeMjKjsPzarsjke8T4BjbgkQmDi4AiL5ni4/ETdHY7jJiioaD9/q5rgtWnpJS0nLRPok9slUaWhN4b+UqBqpgwmKMAHEs4kz4ASd2HhEzS12OPLAlecNTbGgrjakh8KU0DEW4tOBti9vk/xcmTXnBaITOV2kJ76EN2yi+nArqhgkUog5qxRlOH6XKHAQ6w8j8U4tokmwInFFBGFNZ7LJNA3ojwvs+nCjbTsIRclmlbRbw3JvaHnAYUkoaIkBfqZIsHBLKDOJxNRWvhZvl8Jp8jvSMjo9g5so0mF7YXG0Bw4XtosmRZ+4CVnWuwty/GU0zcKjmALq5Zr5eisI0vMKZwVFotkDK9BwbFEDXE0Qw7uMJlOwRAm62ZkJJbpO1XF39sF6Iod5Ya38+lqRCe13vcK8e6Zm1Il+RXzwQrSmWp3gvh525XMSE2iwf5kiDVAcT+sQDxH9xj7Vw/iCi3xaHwXu62E7foH0BugVOhav4Aq2EVGICIBk=
-  - secure: LMLZK9YphW/bc321vKOeE1Ky7vulQNLKA8Q29givrRnASwx9oxn1/YjnskCacTUnkmop/eTqHuXdefQVJc4aZsP7lHvRxQI0z7/Xa1Ap4nNIZlKMASmizSqOF5S3qVv1GH5tBv1Z9eA4TYADqnd1SD6h9K579fvLb9ilyPXHxdIv1Av6/00RmTcrMGyjReWq+hoKM2BULLhe/TSPbKlidtw9geZ7pU1NeCahVnAdMMJv0keA5zrjze79zu7wJbgZGTTCYrrpSfXMj3mnJXsNbkRnNHCzRFixlLoBddpQmjsE/vfToAfUVr/wTYCZZJvZZ+GXCFMdkQUYF941AdZ2BJIYJppv1/kb79cOer6YGzdgOcro/UuM1gTBvFJsSZC/icbp+o0VfqhCkfXk/k0/nLl2lDxRopf+q2w3yMNVQH9/Vp3wodyfSvgOzlS3x3sTE8SdzvKqprE4NLjeC1EkC5QFPnX8yVPPVjQn9pZseYHGa3fg8ToS5ncGDr37azmYpgNbqaHzRqN3EHob+clfeJAaXSf6Ytz3hB1Bw0uOZbyfCaq++DtT4Q7CrmFtJi1YytodvqxJS6byTjB0hXyc15y1zNTMT5d4M5tfX5y1vUalFhtV3/JR4ZrFHMi5b8rFq+SIvmOTZZrNU09Gdi1QwN/xm0oWXuCaHFFsU9Brzng=
-  - secure: N5gQHRdSGD/vZ1LN5zy/G32VU/TVFIPM6uatFxSk6TViGqFAFtiKG6HFGBqty7xekCNykP73sYTrE907gx24Cc+wviUzIYH1tLM0K7/NoKK56uXiWtzgoIf9At1vGL+cLNOLvH5MCIqGGjIg/GzzuCqzWr2iqx/68VybIZhk7qjO4uJ6VzQ7W+KJQc834AhSd0jy1GRG4lJ6qk3HgEswGyh4yfuGYNDiabGN0YnS0vBD1LWQw6d04snes9oVKRLFWHhey1n0y2hAOm0aFT51bOM5dTq5+dqFg/+Uqp0mJ/lVkbWzi0Tu2hnDJFzzF8DLaRNURNwjWChjGf28vy/5EOMCwY8sA0RI9DP5Q79MArtC3ZWTgHSMgJrJk8hAA4St59KdkSjHDQTC8OpMUcVR/JQFFx4Vpt7bG4J4CixAAnejQLfToZ7I6wyfe9uqdbVON4YgOAO653f3UQcUolGjjWFIWZ83Cc6d9yt7Ffc4H/imDrbYiVe5Pr54/3YYuZqHSO9SGRd5NwaGHiSuuRmh/xJzX6M8QxSqCNVJhlOs1wZ2lNjc/dhnDhlEUEylDv2Kchag2s5tzLLmIHkMAUSwUPQinf/uaO0GlyG4VwLfoCBfDPDQuoG+7vrDMkcgVQrcaME7qDAdXyFf2Y16Dumgy2JOePsZlFM7Z6tdJ3GJZ+4=
 branches:
   only:
   - master
@@ -18,14 +16,13 @@ install:
 - composer install
 script:
 - php vendor/bin/phpunit
-#after_success:
-#- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-#- docker build -t $DOCKER_USER/projectmaster .
-#- docker push $DOCKER_USER/projectmaster:master
 deploy:
   provider: gae
-  keyfile: ~/project-tvshow-0130c7b9b9cd.json.enc
+  keyfile: gce.json
   project: project-tvshow
   skip_cleanup: true
   on:
-    branch: develop # ← new!
+    branch: develop
+before_install:
+- openssl aes-256-cbc -K $encrypted_c51c3e5f5d01_key -iv $encrypted_c51c3e5f5d01_iv
+  -in gce.json.enc -out gce.json -d
