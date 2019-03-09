@@ -1,10 +1,10 @@
 language: php
-
+php:
+  - '7.1'
 services:
 - docker
 
-php:
-- '7.1'
+
 env:
   matrix:
     - SYMFONY_VERSION="4.2.*"
