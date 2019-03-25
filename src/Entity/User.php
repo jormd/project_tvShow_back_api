@@ -66,7 +66,7 @@ class User implements UserInterface
     private $commentaires;
 
     /**
-     * @ORM\Column(name="co_google", type="boolean", options={"default": 0})
+     * @ORM\Column(name="co_google", type="boolean", options={"default": false})
      */
     private $coGoogle;
 

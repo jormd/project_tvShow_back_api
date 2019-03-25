@@ -37,6 +37,7 @@ class UserController extends Controller
 
             if($form->isSubmitted() && $form->isValid()){
                 $user = new User();
+                $user->setCoGoogle(false);
 
                 $user = $userData->extract($user);
 
