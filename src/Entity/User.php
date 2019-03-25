@@ -31,7 +31,7 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -64,6 +64,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="user")
      */
     private $commentaires;
+
+    /**
+     * @ORM\Column(name="co_google", type="boolean", options={"default": 0})
+     */
+    private $coGoogle;
 
     /**
      * User constructor.
@@ -280,6 +285,22 @@ class User implements UserInterface
     {
         $this->commentaires->remove($commentaire);
         return $this->commentaires;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCoGoogle()
+    {
+        return $this->coGoogle;
+    }
+
+    /**
+     * @param mixed $coGoogle
+     */
+    public function setCoGoogle($coGoogle): void
+    {
+        $this->coGoogle = $coGoogle;
     }
 
 }

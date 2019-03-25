@@ -113,6 +113,56 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @Rest\Post("/api/logingoogle")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function loginGoogleAction(Request $request){
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $token = $request->request->all()['token'];
+
+
+            if($token){
+                $client = new \Google_Client();
+                $check = $client->verifyIdToken($token);
+
+                if($check){
+                    $email = $check['email'];
+                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
+
+                    if (is_null($user) || !$user) {
+                        $user = new User();
+                        $user->setEmail($email);
+                        $user->setLastname($check['family_name']);
+                        $user->setName($check['given_name']);
+                        $user->setCoGoogle(true);
+
+                        $this->getDoctrine()->getManager()->persist($user);
+                        $this->getDoctrine()->getManager()->flush();
+                    }
+
+                    return new JsonResponse([
+                        'code' => 'succes',
+                        'tokenJWT' => $this->getTokenUser($user)
+                    ]);
+                }
+
+
+            }
+
+            return new JsonResponse([
+                'code' => 'error',
+                'message' => 'Erreur connexion'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'error',
+            'message' => 'Vous ne pouvez pas vous connecté'
+        ]);
+    }
+
     public function getTokenUser(User $user)
     {
         $jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
