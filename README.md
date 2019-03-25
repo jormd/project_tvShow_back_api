@@ -19,11 +19,11 @@ Lundi 25 mars :
 - [X] mise en place des commentaires
 
 Mardi 23 avril :
-- [ ] Authentification utilisateur:
+- [X] Authentification utilisateur:
     - - [X] jwt
     - - [X] auth symfony 
-    - - [ ] authentification google
-- [ ] début du front-end (utilisation de react)
+    - - [X] authentification google
+- [X] début du front-end (utilisation de react)
 - [ ] mise en place du design du front-end
 - [ ] déploiement continue (back-end + front-end)
 
