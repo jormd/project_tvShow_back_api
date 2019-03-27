@@ -38,6 +38,7 @@ class TvShowTest extends WebTestCase
         $user->setName('test');
         $user->setLastname('aaa');
         $user->setPassword('test');
+        $user->setCoGoogle(false);
 
         $mockUser = $this->createMock(TokenInterface::class);
         $mockUser->method('getUser')->willReturn($user);
@@ -62,6 +63,7 @@ class TvShowTest extends WebTestCase
         $user->setName('tesat');
         $user->setLastname('aaaa');
         $user->setPassword('tesat');
+        $user->setCoGoogle(false);
 
         $mockUser = $this->createMock(TokenInterface::class);
         $mockUser->method('getUser')->willReturn($user);

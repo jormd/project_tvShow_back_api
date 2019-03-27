@@ -37,6 +37,7 @@ class UserController extends Controller
 
             if($form->isSubmitted() && $form->isValid()){
                 $user = new User();
+                $user->setCoGoogle(false);
 
                 $user = $userData->extract($user);
 
@@ -104,6 +105,56 @@ class UserController extends Controller
             return new JsonResponse([
                 'code' => 'error',
                 'message' => 'Erreur connexion, le mdp est incorret ou l\'utilisateur n\'existe pas'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'error',
+            'message' => 'Vous ne pouvez pas vous connecté'
+        ]);
+    }
+
+    /**
+     * @Rest\Post("/api/logingoogle")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function loginGoogleAction(Request $request){
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $token = $request->request->all()['token'];
+
+
+            if($token){
+                $client = new \Google_Client();
+                $check = $client->verifyIdToken($token);
+
+                if($check){
+                    $email = $check['email'];
+                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
+
+                    if (is_null($user) || !$user) {
+                        $user = new User();
+                        $user->setEmail($email);
+                        $user->setLastname($check['family_name']);
+                        $user->setName($check['given_name']);
+                        $user->setCoGoogle(true);
+
+                        $this->getDoctrine()->getManager()->persist($user);
+                        $this->getDoctrine()->getManager()->flush();
+                    }
+
+                    return new JsonResponse([
+                        'code' => 'succes',
+                        'tokenJWT' => $this->getTokenUser($user)
+                    ]);
+                }
+
+
+            }
+
+            return new JsonResponse([
+                'code' => 'error',
+                'message' => 'Erreur connexion'
             ]);
         }
 

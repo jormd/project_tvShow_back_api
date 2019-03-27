@@ -46,6 +46,7 @@ class CommentaireTest extends WebTestCase
         $user->setName('test');
         $user->setLastname('aaa');
         $user->setPassword('test');
+        $user->setCoGoogle(false);
 
         $mockUser = $this->createMock(TokenInterface::class);
         $mockUser->method('getUser')->willReturn($user);
