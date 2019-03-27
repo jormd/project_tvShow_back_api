@@ -25,7 +25,7 @@ Mardi 23 avril :
     - - [X] authentification google
 - [X] début du front-end (utilisation de react)
 - [ ] mise en place du design du front-end
-- [ ] déploiement continue (back-end + front-end)
+- [X] déploiement continue (back-end + front-end) --> heroku
 
 Jeudi 23 Mai :
 - [ ] peaufinage des tests unitaires
