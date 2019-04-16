@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\TvShow;
 use App\Entity\User;
+use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,24 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 class TvShowController extends Controller
 {
+    /**
+     * @Rest\Post("/api/series/all")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listAll(Request $request)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $tvShows = $em->getRepository(TvShow::class)->findTvShowForUser($user);
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $tvShows
+        ]);
+    }
 
     /**
      * @Rest\Get("/api/follow/serie")
