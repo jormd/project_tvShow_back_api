@@ -20,12 +20,13 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class TvShowController extends Controller
 {
     /**
-     * @Rest\Post("/api/series/all")
+     * @Rest\Get("/api/series/all")
      * @param Request $request
      * @return JsonResponse
      */
     public function listAll(Request $request)
     {
+       //var_dump($this->getUser());die();
         $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
