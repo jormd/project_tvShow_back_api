@@ -51,6 +51,53 @@ class TvShowController extends Controller
     }
 
     /**
+     * @Rest\Post("/api/find/serie")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listSpecificTvShow(Request $request)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $request->get('idApi')]);
+        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+        $returnTvShow[$res['id']]["name"] = $res["name"];
+        $returnTvShow[$res['id']]["img"] = $res["image"]["original"];
+        $returnTvShow[$res['id']]["summary"] = $res["summary"];
+        $returnTvShow[$res['id']]["create"] = $res["premiered"];
+        $returnTvShow[$res['id']]["status"] = $res["status"];
+
+        $seasons = $this->forward('App\Controller\SearchTvShowController::searchSeasonTvShowById', ['tv' => $request->get('idApi')]);
+        $seasons = json_decode(json_decode($seasons->getContent(), true)['content'], true);
+
+        foreach ($seasons as $season){
+            $returnTvShow[$res['id']]['season'][$season['id']]['episodeNumber'] = $season['episodeOrder'];
+
+            $episodes = $this->forward('App\Controller\SearchTvShowController::searchEpisodeBySeason', ['tv' => $season['id']]);
+            $episodes = json_decode(json_decode($episodes->getContent(), true)['content'], true);
+
+            foreach ($episodes as $episode){
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['name'] = $episode['name'];
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['date'] = $episode['airdate'];
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['summary'] = $episode['summary'];
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['number'] = $episode['number'];
+            }
+        }
+
+        $userFollowTvShow = $em->getRepository(TvShow::class)->findTvShowByUserAndId($user, $request->get('idApi'));
+
+        $returnTvShow[$res['id']]["follow"] = count($userFollowTvShow) > 0;
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $returnTvShow
+        ]);
+    }
+
+    /**
      * @Rest\Get("/api/follow/serie")
      * @param Request $request
      * @return JsonResponse

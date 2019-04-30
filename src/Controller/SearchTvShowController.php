@@ -101,6 +101,7 @@ class SearchTvShowController extends Controller
     }
 
     /**
+     * Recherche de la série par son id
      * @param Request $request
      * @return JsonResponse
      */
@@ -110,6 +111,56 @@ class SearchTvShowController extends Controller
 
         if(!is_null($tv)){
             $res = $this->callApi('shows/'.$tv);
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * Recherche des saisons d'une série par son id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchSeasonTvShowById($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('shows/'.$tv.'/seasons');
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * Recherche des épisodes par saison
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchEpisodeBySeason($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('seasons/'.$tv.'/episodes');
         }
 
         if(is_bool($res) && !$res){
