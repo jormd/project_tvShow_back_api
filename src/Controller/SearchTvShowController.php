@@ -100,4 +100,28 @@ class SearchTvShowController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchTvShowById($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('shows/'.$tv);
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
 }

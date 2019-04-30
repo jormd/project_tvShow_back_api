@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\TvShow;
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,16 +27,26 @@ class TvShowController extends Controller
      */
     public function listAll(Request $request)
     {
-       //var_dump($this->getUser());die();
         $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
 
         $tvShows = $em->getRepository(TvShow::class)->findTvShowForUser($user);
 
+        $returnTvShow = [];
+        foreach ($tvShows as $tvShow){
+            $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $tvShow['idApi']]);
+
+            $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+            $returnTvShow[$res['id']]["name"] = $res["name"];
+            $returnTvShow[$res['id']]["img"] = $res["image"]["original"];
+            $returnTvShow[$res['id']]["summary"] = $res["summary"];
+        }
+        
         return new JsonResponse([
             'code' => 'success',
-            'content' => $tvShows
+            'content' => $returnTvShow
         ]);
     }
 
