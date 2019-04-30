@@ -10,6 +10,7 @@
         "google/apiclient": "^2.2",
         "jms/serializer-bundle": "^2.4",
         "lexik/jwt-authentication-bundle": "^2.6",
+        "nelmio/cors-bundle": "^1.5",
         "phpunit/phpunit": "^7.5",
         "symfony/browser-kit": "4.2.*",
         "symfony/console": "4.2.*",
