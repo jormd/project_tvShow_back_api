@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Commentaire;
 use App\Entity\Episode;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,6 +20,52 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 class EpisodeController extends Controller
 {
+
+    /**
+     * @Rest\Post("/api/info/episode")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function infoEpisode(Request $request)
+    {
+        $episodeReq = $request->get('episode');
+
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $hasSerie = $user->getTvShows()->filter(function ($show) use ($episodeReq){
+            return $show->getIdApi() == $episodeReq['idSerie'];
+        });
+
+        if(count($hasSerie) == 0){
+            return new JsonResponse([
+                'code' => 'error',
+                'content' => 'vous ne suivez pas cette série, si vous voulez suivre cette série veuillez suivre la série'
+            ]);
+        }
+
+        $res = $this->forward('App\Controller\SearchTvShowController::infoEpisode', ['serie' => $episodeReq['idSerie'], 'saison' => $episodeReq['saison'], 'episode' => $episodeReq['episode']]);
+        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+        $resultat['name'] = $res['name'];
+        $resultat['summary'] = $res['summary'];
+
+        $commentaires = $em->getRepository(Commentaire::class)->findCommentaire($res['id']);
+
+        /** @var Commentaire $commentaire */
+        foreach ($commentaires as $commentaire => $index)
+        {
+            $resultat['commentaire'][$index]['message'] = $commentaire->getMessage();
+            $resultat['commentaire'][$index]['author'] = $commentaire->getUser()->getName();
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
 
     /**
      * @Rest\Post("/api/check/episode")

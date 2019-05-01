@@ -175,4 +175,29 @@ class SearchTvShowController extends Controller
         ]);
     }
 
+    /**
+     * info épisode
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function infoEpisode($serie = null, $saison = null, $episode = null)
+    {
+        $res = false;
+
+        if(!is_null($serie) && !is_null($saison) && !is_null($episode)){
+            $res = $this->callApi('shows/'.$serie.'/episodebynumber?season='.$saison.'&number='.$episode);
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
 }
