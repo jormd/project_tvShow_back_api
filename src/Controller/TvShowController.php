@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Episode;
 use App\Entity\TvShow;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,6 +40,7 @@ class TvShowController extends Controller
 
             $res = json_decode(json_decode($res->getContent(), true)['content'], true);
 
+            $returnTvShow[$res['id']]["id"] = $res["id"];
             $returnTvShow[$res['id']]["name"] = $res["name"];
             $returnTvShow[$res['id']]["img"] = $res["image"]["original"];
             $returnTvShow[$res['id']]["summary"] = $res["summary"];
@@ -65,6 +67,7 @@ class TvShowController extends Controller
         $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $request->get('idApi')]);
         $res = json_decode(json_decode($res->getContent(), true)['content'], true);
         $returnTvShow[$res['id']]["name"] = $res["name"];
+        $returnTvShow[$res['id']]["id"] = $res["id"];
         $returnTvShow[$res['id']]["img"] = $res["image"]["original"];
         $returnTvShow[$res['id']]["summary"] = $res["summary"];
         $returnTvShow[$res['id']]["create"] = $res["premiered"];
@@ -80,10 +83,15 @@ class TvShowController extends Controller
             $episodes = json_decode(json_decode($episodes->getContent(), true)['content'], true);
 
             foreach ($episodes as $episode){
+
+                $see = $em->getRepository(Episode::class)->findEpisodeSee($user, $res['id'], $episode['id']);
+
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['id'] = $episode['id'];
                 $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['name'] = $episode['name'];
                 $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['date'] = $episode['airdate'];
                 $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['summary'] = $episode['summary'];
                 $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['number'] = $episode['number'];
+                $returnTvShow[$res['id']]['season'][$season['id']]['episodes'][$episode['id']]['see'] = count($see) > 0;
             }
         }
 
@@ -98,7 +106,7 @@ class TvShowController extends Controller
     }
 
     /**
-     * @Rest\Get("/api/follow/serie")
+     * @Rest\Post("/api/follow/serie")
      * @param Request $request
      * @return JsonResponse
      */
@@ -132,7 +140,7 @@ class TvShowController extends Controller
     }
 
     /**
-     * @Rest\Get("/api/unfollow/serie")
+     * @Rest\Post("/api/unfollow/serie")
      * @param Request $request
      * @return JsonResponse
      */
