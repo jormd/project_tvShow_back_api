@@ -75,13 +75,13 @@ class TvShowController extends Controller
 
         $seasons = $this->forward('App\Controller\SearchTvShowController::searchSeasonTvShowById', ['tv' => $request->get('idApi')]);
         $seasons = json_decode(json_decode($seasons->getContent(), true)['content'], true);
-
+        $returnTvShow[$res['id']]['season']= [];
         foreach ($seasons as $season){
             $returnTvShow[$res['id']]['season'][$season['id']]['episodeNumber'] = $season['episodeOrder'];
 
             $episodes = $this->forward('App\Controller\SearchTvShowController::searchEpisodeBySeason', ['tv' => $season['id']]);
             $episodes = json_decode(json_decode($episodes->getContent(), true)['content'], true);
-
+            $returnTvShow[$res['id']]['season'][$season['id']]['episodes'] = [];
             foreach ($episodes as $episode){
 
                 $see = $em->getRepository(Episode::class)->findEpisodeSee($user, $res['id'], $episode['id']);
