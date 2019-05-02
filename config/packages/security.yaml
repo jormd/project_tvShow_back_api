@@ -7,6 +7,30 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
+        api_login:
+            pattern: /api/login
+            stateless: true
+            anonymous: true
+
+        api_loginGoogle:
+            pattern: /api/logingoogle
+            stateless: true
+            anonymous: true
+
+
+        api_createUser:
+            pattern: /api/create/user
+            stateless: true
+            anonymous: true
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            anonymous: false
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -15,13 +39,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthentificatorAuthenticator
-        api:
-            pattern:   ^/api
-            stateless: true
-            anonymous: false
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
 
             # activate different ways to authenticate
 
@@ -36,6 +53,7 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/create/user, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/logingoogle, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
