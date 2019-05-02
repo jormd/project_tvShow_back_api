@@ -49,21 +49,25 @@ class EpisodeController extends Controller
         $res = $this->forward('App\Controller\SearchTvShowController::infoEpisode', ['serie' => $episodeReq['idSerie'], 'saison' => $episodeReq['saison'], 'episode' => $episodeReq['episode']]);
         $res = json_decode(json_decode($res->getContent(), true)['content'], true);
 
+        $resultat['idEpisode'] = $res['id'];
         $resultat['name'] = $res['name'];
         $resultat['summary'] = $res['summary'];
 
         $commentaires = $em->getRepository(Commentaire::class)->findCommentaire($res['id']);
 
+        $resultat['commentaire'] = [];
+        $index = 1;
         /** @var Commentaire $commentaire */
-        foreach ($commentaires as $commentaire => $index)
+        foreach ($commentaires as $commentaire)
         {
             $resultat['commentaire'][$index]['message'] = $commentaire->getMessage();
             $resultat['commentaire'][$index]['author'] = $commentaire->getUser()->getName();
+            $index++;
         }
 
         return new JsonResponse([
             'code' => 'success',
-            'content' => $res
+            'content' => $resultat
         ]);
     }
 

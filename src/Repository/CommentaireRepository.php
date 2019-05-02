@@ -24,6 +24,6 @@ class CommentaireRepository extends ServiceEntityRepository
             ->setParameter('episode', $episode);
 
 
-        return $query->getQuery()->getArrayResult();
+        return $query->getQuery()->getResult();
     }
 }
