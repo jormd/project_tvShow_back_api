@@ -18,7 +18,7 @@ Lundi 25 mars :
 - [X] mise en place de check des épisodes
 - [X] mise en place des commentaires
 
-Mardi 23 avril :
+Mardi 23 avril : https://www.youtube.com/watch?v=bdK83ef0JJ8&feature=youtu.be
 - [X] Authentification utilisateur:
     - - [X] jwt
     - - [X] auth symfony 
