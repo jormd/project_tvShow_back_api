@@ -24,7 +24,7 @@ Mardi 23 avril :
     - - [X] auth symfony 
     - - [X] authentification google
 - [X] début du front-end (utilisation de react)
-- [ ] mise en place du design du front-end
+- [X] mise en place du design du front-end
 - [X] déploiement continue (back-end + front-end) --> heroku
 
 Jeudi 23 Mai :
