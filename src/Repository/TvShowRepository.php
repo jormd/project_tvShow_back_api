@@ -18,10 +18,21 @@ class TvShowRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TvShow::class);
     }
+
     public function findTvShowForUser(User $user)
     {
         $qb = $this->createQueryBuilder('tv');
         $qb->Join('tv.users', 'users', Join::WITH, 'users.id = :user')
+            ->setParameter(':user', $user->getId());
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    public function findTvShowByUserAndId(User $user, $id)
+    {
+        $qb = $this->createQueryBuilder('tv');
+        $qb->Join('tv.users', 'users', Join::WITH, 'users.id = :user')
+            ->where($qb->expr()->eq('tv.idApi', $id))
             ->setParameter(':user', $user->getId());
 
         return $qb->getQuery()->getArrayResult();
