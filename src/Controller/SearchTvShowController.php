@@ -52,7 +52,7 @@ class SearchTvShowController extends Controller
     /**
      * Méthode de recherché des séries par rapport à une recherche
      *
-     * @Rest\Get("/api/search")
+     * @Rest\Post("/api/search")
      * @param Request $request
      * @return JsonResponse
      */
