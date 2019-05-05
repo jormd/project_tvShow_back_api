@@ -29,7 +29,7 @@ Mardi 23 avril : https://www.youtube.com/watch?v=bdK83ef0JJ8&feature=youtu.be
 
 Jeudi 23 Mai :
 - [ ] peaufinage des tests unitaires
-- [ ] appel des méthodes d’api de l’application
+- [X] appel des méthodes d’api de l’application
 - [ ] ajout d’ami sur l’application 
 - [ ] ajout des genres utilisateur
 - [ ] sauvegarde des genres des séries les plus récurrent
