@@ -325,7 +325,7 @@ class User implements UserInterface
 
     public function removeFriends($user)
     {
-        $this->friends->remove($user);
+        $this->friends->removeElement($user);
         return $this->friends;
     }
 
