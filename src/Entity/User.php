@@ -71,6 +71,11 @@ class User implements UserInterface
     private $coGoogle;
 
     /**
+     * @ORM\Column(name="friends", type="array")
+     */
+    private $friends;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -78,6 +83,7 @@ class User implements UserInterface
         $this->tvShows = new ArrayCollection();
         $this->episodes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->friends = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -301,6 +307,26 @@ class User implements UserInterface
     public function setCoGoogle($coGoogle): void
     {
         $this->coGoogle = $coGoogle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFriends()
+    {
+        return $this->friends;
+    }
+
+    public function addFriends($user)
+    {
+        $this->friends->add($user);
+        return $this->friends;
+    }
+
+    public function removeFriends($user)
+    {
+        $this->friends->remove($user);
+        return $this->friends;
     }
 
 }
