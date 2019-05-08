@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\Episode;
+use App\Entity\Genre;
 use App\Entity\TvShow;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,6 +126,26 @@ class TvShowController extends Controller
             $tvShow->setIdApi($serie['id']);
             $tvShow->setNom($serie['name']);
         }
+
+//        //ajout genres
+//        $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $serie['id']]);
+//        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+//
+//        foreach ($res['genres'] as $genre){
+//            $entityGenre = $em->getRepository(Genre::class)->findBy(['name' => $genre]);
+//
+//            if(count($entityGenre->toArray()) == 0){
+//                $entityGenre = new Genre();
+//                $entityGenre->setName($genre);
+//            }
+//            else{
+//                $entityGenre = $entityGenre[0];
+//            }
+//
+//            $entityGenre->addTvShow($tvShow);
+//            $tvShow->addGenre($entityGenre);
+//            $em->persist($entityGenre);
+//        }
 
         $tvShow->addUser($user);
         $user->addTvShow($tvShow);

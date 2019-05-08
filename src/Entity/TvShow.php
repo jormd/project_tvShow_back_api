@@ -42,11 +42,17 @@ class TvShow
     private $users;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Genre", inversedBy="tvShow", cascade={"all"})
+     */
+    private $genres;
+
+    /**
      * tvShow constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     /**
@@ -112,6 +118,26 @@ class TvShow
     {
         $this->users->removeElement($user);
         return $this->users;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(Genre $genre)
+    {
+        $this->genres->add($genre);
+        return $this->genres;
+    }
+
+    public function removeGenre(Genre $genre)
+    {
+        $this->genres->removeElement($genre);
+        return $this->genres;
     }
 
 }
