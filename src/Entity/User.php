@@ -71,6 +71,12 @@ class User implements UserInterface
     private $coGoogle;
 
     /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Genre", mappedBy="users", cascade={"all"})
+     */
+    private $genres;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -78,6 +84,7 @@ class User implements UserInterface
         $this->tvShows = new ArrayCollection();
         $this->episodes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -301,6 +308,26 @@ class User implements UserInterface
     public function setCoGoogle($coGoogle): void
     {
         $this->coGoogle = $coGoogle;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    public function addGenre($genre)
+    {
+        $this->genres->add($genre);
+        return $this->genres;
+    }
+
+    public function removeGenre($genre)
+    {
+        $this->genres->removeElement($genre);
+        return $this->genres;
     }
 
 }
