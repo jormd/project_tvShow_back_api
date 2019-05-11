@@ -70,6 +70,19 @@ class User implements UserInterface
      */
     private $coGoogle;
 
+    // ...
+    /**
+     * One Category has Many Categories.
+     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
+     */
+    private $friends;
+
+    /**
+     * Many Categories have One Category.
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="friends")
+     */
+    private $parent;
+
     /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Genre", mappedBy="users", cascade={"all"})
@@ -85,6 +98,7 @@ class User implements UserInterface
         $this->episodes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->genres = new ArrayCollection();
+        $this->friends = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -328,6 +342,26 @@ class User implements UserInterface
     {
         $this->genres->removeElement($genre);
         return $this->genres;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFriends()
+    {
+        return $this->friends;
+    }
+
+    public function addFriends($user)
+    {
+        $this->friends->add($user);
+        return $this->friends;
+    }
+
+    public function removeFriends($user)
+    {
+        $this->friends->removeElement($user);
+        return $this->friends;
     }
 
 }

@@ -171,4 +171,35 @@ class UserController extends Controller
 
         return $jwtManager->create($user);
     }
+
+    /**
+     * @Rest\Post("/api/profile")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function profileUser(Request $request)
+    {
+        $user = $request->request->get("user");
+
+        if(!is_null($user)){
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $em->getRepository(User::class)->find($user);
+
+            $res[$user->getId()]['name'] = $user->getName();
+            $res[$user->getId()]['id'] = $user->getId();
+
+            if($this->getUser()->getId() != $user->getId()){
+                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
+            }
+
+            return new JsonResponse([
+                'code' => 'success',
+                'content' => $res
+            ]);
+        }
+        return new JsonResponse([
+            'code' => 'error',
+        ]);
+    }
 }
