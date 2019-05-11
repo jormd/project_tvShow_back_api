@@ -186,11 +186,11 @@ class UserController extends Controller
 
             $user = $em->getRepository(User::class)->find($user);
 
-            $res['name'] = $user->getName();
-            $res['id'] = $user->getId();
+            $res[$user->getId()]['name'] = $user->getName();
+            $res[$user->getId()]['id'] = $user->getId();
 
             if($this->getUser()->getId() != $user->getId()){
-                $res['amis'] = in_array($user->getId(), $this->getUser()->getFriends()) ? true: false;
+                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()) ? true : false;
             }
 
             return new JsonResponse([

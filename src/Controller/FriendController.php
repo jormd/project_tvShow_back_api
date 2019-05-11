@@ -55,6 +55,9 @@ class FriendController extends Controller
         $user = $request->request->get("friend");
 
         if(!is_null($user)){
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->find($user);
+
             $this->getUser()->addFriends($user);
 
             $em = $this->getDoctrine()->getManager();

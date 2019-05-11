@@ -70,10 +70,18 @@ class User implements UserInterface
      */
     private $coGoogle;
 
+    // ...
     /**
-     * @ORM\Column(name="friends", type="array")
+     * One Category has Many Categories.
+     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
      */
     private $friends;
+
+    /**
+     * Many Categories have One Category.
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="friends")
+     */
+    private $parent;
 
     /**
      * User constructor.
