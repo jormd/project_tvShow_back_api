@@ -190,7 +190,7 @@ class UserController extends Controller
             $res[$user->getId()]['id'] = $user->getId();
 
             if($this->getUser()->getId() != $user->getId()){
-                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()) ? true : false;
+                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
             }
 
             return new JsonResponse([
