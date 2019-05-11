@@ -92,6 +92,7 @@ class UserController extends Controller
                 if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
 
                     $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
+                    $request->request->add(['id' => $user->getId() ]);
 
                     return $guardHandler->authenticateUserAndHandleSuccess(
                         $user,          // the User object you just created
@@ -145,7 +146,8 @@ class UserController extends Controller
 
                     return new JsonResponse([
                         'code' => 'succes',
-                        'tokenJWT' => $this->getTokenUser($user)
+                        'tokenJWT' => $this->getTokenUser($user),
+                        'id' => $user->getId()
                     ]);
                 }
 
