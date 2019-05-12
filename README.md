@@ -31,7 +31,7 @@ Jeudi 23 Mai :
 - [ ] peaufinage des tests unitaires
 - [X] appel des méthodes d’api de l’application
 - [ ] ajout d’ami sur l’application 
-- [ ] ajout des genres utilisateur
+- [X] ajout des genres utilisateur
 - [ ] sauvegarde des genres des séries les plus récurrent
 
 Vendredi 21 Juin :
