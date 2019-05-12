@@ -87,10 +87,12 @@ class FriendController extends Controller
         $user = $request->request->get("friend");
 
         if(!is_null($user)){
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->find($user);
             if(in_array($user, $this->getUser()->getFriends()->toArray())){
-                $this->getUser()->removeFriends($user);
 
-                $em = $this->getDoctrine()->getManager();
+
+                $this->getUser()->removeFriends($user);
 
                 $em->persist($this->getUser());
                 $em->flush();

@@ -21,39 +21,46 @@ class GenreController extends Controller
      */
     public function addGenre(Request $request)
     {
-        $genre = $request->request->get("genre");
+        $genres = $request->request->get("genre");
 
-        if(!is_null($genre)){
+        if(!is_null($genres)){
+            $genres = explode(',', $genres);
             $em = $this->getDoctrine()->getManager();
 
-            $entityGenre = $em->getRepository(Genre::class)->findBy(['name' => $genre]);
-
-            if(count($entityGenre) == 0){
-                $entityGenre = new Genre();
-                $entityGenre->setName($genre);
-                $em->persist($entityGenre);
+            /** @var Genre $genre */
+            foreach ($this->getUser()->getGenres() as $genre){
+                $this->getUser()->removeGenre($genre);
+                $genre->removeUser($this->getUser());
+                $em->persist($genre);
             }
-            else{
-                $entityGenre = $entityGenre[0];
+            $em->persist($this->getUser());
+            $em->flush();
+
+            foreach ($genres as $genre){
+                $entityGenre = $em->getRepository(Genre::class)->findBy(['name' => $genre]);
+
+                if(count($entityGenre) == 0){
+                    $entityGenre = new Genre();
+                    $entityGenre->setName($genre);
+                    $em->persist($entityGenre);
+                }
+                else{
+                    $entityGenre = $entityGenre[0];
+                }
+
+                /** @var User $user */
+                $user = $this->getUser();
+
+                if(!in_array($entityGenre, $user->getGenres()->toArray())){
+                    $user->addGenre($entityGenre);
+                    $entityGenre->addUser($user);
+                    $em->persist($user);
+                    $em->flush();
+                }
             }
-
-            /** @var User $user */
-            $user = $this->getUser();
-
-            if(!in_array($entityGenre, $user->getGenres()->toArray())){
-                $user->addGenre($entityGenre);
-                $entityGenre->addUser($user);
-                $em->persist($user);
-                $em->flush();
-                return new JsonResponse([
-                    'code' => 'success',
-                    'content' => "Le genre à été rajouter à votre compte"
-                ]);
-            }
-
             return new JsonResponse([
-                'code' => 'error',
-                'content' => "Le genre était déjà rajouter à votre compte"
+                'code' => 'success',
+                'content' => "Le genre à été rajouter à votre compte"
             ]);
         }
 

@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Genre;
 use App\Entity\User;
 use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
@@ -193,6 +194,11 @@ class UserController extends Controller
 
             if($this->getUser()->getId() != $user->getId()){
                 $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
+            }
+
+            /** @var Genre $genre */
+            foreach ($user->getGenres() as $genre){
+                $res[$user->getId()]['genre'][$genre->getId()] = $genre->getName();
             }
 
             return new JsonResponse([
