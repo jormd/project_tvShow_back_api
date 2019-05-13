@@ -13,8 +13,6 @@ use App\Entity\Episode;
 use App\Entity\Genre;
 use App\Entity\TvShow;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -125,27 +123,13 @@ class TvShowController extends Controller
             $tvShow = new TvShow();
             $tvShow->setIdApi($serie['id']);
             $tvShow->setNom($serie['name']);
+
+            //blocage pour les tests car mcok impossible ou super compliqué à mettre en place
+            if(!isset($serie['test'])){
+                $this->searchAndAddGenreTvShow($serie, $tvShow);
+            }
         }
 
-//        //ajout genres
-//        $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $serie['id']]);
-//        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
-//
-//        foreach ($res['genres'] as $genre){
-//            $entityGenre = $em->getRepository(Genre::class)->findBy(['name' => $genre]);
-//
-//            if(count($entityGenre->toArray()) == 0){
-//                $entityGenre = new Genre();
-//                $entityGenre->setName($genre);
-//            }
-//            else{
-//                $entityGenre = $entityGenre[0];
-//            }
-//
-//            $entityGenre->addTvShow($tvShow);
-//            $tvShow->addGenre($entityGenre);
-//            $em->persist($entityGenre);
-//        }
 
         $tvShow->addUser($user);
         $user->addTvShow($tvShow);
@@ -199,5 +183,29 @@ class TvShowController extends Controller
             'code' => 'success',
             'content' => 'la série à été supprimer de votre compte'
         ]);
+    }
+
+    public function searchAndAddGenreTvShow($serie, $tvShow)
+    {
+        $em = $this->getDoctrine()->getManager();
+        //ajout genres
+        $res = $this->forward('App\Controller\SearchTvShowController::searchTvShowById', ['tv' => $serie['id']]);
+        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+        foreach ($res['genres'] as $genre){
+            $entityGenre = $em->getRepository(Genre::class)->findBy(['name' => $genre]);
+
+            if(count($entityGenre) == 0){
+                $entityGenre = new Genre();
+                $entityGenre->setName($genre);
+            }
+            else{
+                $entityGenre = $entityGenre[0];
+            }
+
+            $entityGenre->addTvShow($tvShow);
+            $tvShow->addGenre($entityGenre);
+            $em->persist($entityGenre);
+        }
     }
 }

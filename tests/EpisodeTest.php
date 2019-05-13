@@ -96,7 +96,7 @@ class EpisodeTest extends WebTestCase
     public function testCheckWithFollowTvShow()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -112,7 +112,7 @@ class EpisodeTest extends WebTestCase
     public function testCheckExistantEpisodeWithFollowTvShow()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -141,7 +141,7 @@ class EpisodeTest extends WebTestCase
     public function testUnCheckEpisodeWithFollowTvShow()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -173,7 +173,7 @@ class EpisodeTest extends WebTestCase
     public function testUnCheckEpisodeNotExist()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -189,7 +189,7 @@ class EpisodeTest extends WebTestCase
     public function testUnCheckEpisodeWithMany()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 

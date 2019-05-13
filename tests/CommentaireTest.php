@@ -83,7 +83,7 @@ class CommentaireTest extends WebTestCase
     public function testAddCommntaireSuccess()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -118,7 +118,7 @@ class CommentaireTest extends WebTestCase
     public function testRemoveCommentaireSuccess()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
