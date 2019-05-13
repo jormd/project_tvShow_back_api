@@ -82,26 +82,6 @@ class GenreTest extends WebTestCase
         $this->assertEquals(1, count($this->entityManager->getRepository(Genre::class)->findAll()));
     }
 
-    public function testAddGenreDoublon()
-    {
-        $request = new Request();
-        $request->request->add(['genre' => 'claude']);
-
-        $json = $this->genreController->addGenre($request);
-
-        $res = json_decode($json->getContent(), true);
-
-        $this->assertEquals('success', $res['code']);
-        $this->assertEquals(1, count($this->entityManager->getRepository(Genre::class)->findAll()));
-
-        $json = $this->genreController->addGenre($request);
-
-        $res = json_decode($json->getContent(), true);
-
-        $this->assertEquals('error', $res['code']);
-        $this->assertEquals(1, count($this->entityManager->getRepository(Genre::class)->findAll()));
-    }
-
     public function testAdd2Genre()
     {
         $request = new Request();
