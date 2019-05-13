@@ -32,7 +32,7 @@ Jeudi 23 Mai :
 - [X] appel des méthodes d’api de l’application
 - [X] ajout d’ami sur l’application 
 - [X] ajout des genres utilisateur
-- [ ] sauvegarde des genres des séries les plus récurrent
+- [X] sauvegarde des genres des séries les plus récurrent
 
 Vendredi 21 Juin :
 - [ ] liste des prochain épisodes
