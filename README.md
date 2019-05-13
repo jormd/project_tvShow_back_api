@@ -28,9 +28,9 @@ Mardi 23 avril : https://www.youtube.com/watch?v=bdK83ef0JJ8&feature=youtu.be
 - [X] déploiement continue (back-end + front-end) --> heroku
 
 Jeudi 23 Mai :
-- [ ] peaufinage des tests unitaires
+- [X] peaufinage des tests unitaires
 - [X] appel des méthodes d’api de l’application
-- [ ] ajout d’ami sur l’application 
+- [X] ajout d’ami sur l’application 
 - [X] ajout des genres utilisateur
 - [ ] sauvegarde des genres des séries les plus récurrent
 
