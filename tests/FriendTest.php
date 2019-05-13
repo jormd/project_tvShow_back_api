@@ -164,8 +164,22 @@ class FriendTest extends WebTestCase
 
     public function testRemoveError()
     {
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $params['registration_perso_form'] = [
+            'email' => 'tezaezaest@gmail.com',
+            'name' => 'teszaezaet',
+            'lastname' => 'teazaezest',
+            'password' => '1aE#kajddssd'
+        ];
+
+        $this->request->request->add($params);
+
+        $this->userController->createUserAction($this->request, $this->encoder);
+
         $request = new Request();
-        $request->request->add(['friend' => 9]);
+        $request->request->add(['friend' => 1]);
 
         $json = $this->friendController->removeFriend($request);
         $res = json_decode($json->getContent(), true);

@@ -96,7 +96,7 @@ class FriendController extends Controller
             $user = $em->getRepository(User::class)->find($user);
 
             $friend = $em->getRepository(Friends::class)->findBy(['user' => $this->getUser()->getId(), 'friend' => $user->getId()]);
-            if(!is_null($friend)){
+            if(!is_null($friend) && count($friend) > 0){
 
                 $user->removeFriends($friend[0]);
                 $this->getUser()->removeHasFriends($friend[0]);
