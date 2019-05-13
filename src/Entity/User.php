@@ -70,18 +70,22 @@ class User implements UserInterface
      */
     private $coGoogle;
 
-    // ...
     /**
-     * One Category has Many Categories.
-     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Friends", mappedBy="friend")
      */
     private $friends;
 
     /**
      * Many Categories have One Category.
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="friends")
+     * @ORM\OneToMany(targetEntity="Friends", mappedBy="user")
      */
-    private $parent;
+    private $hasFriends;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Genre", mappedBy="users", cascade={"all"})
+     */
+    private $genres;
 
     /**
      * User constructor.
@@ -91,7 +95,9 @@ class User implements UserInterface
         $this->tvShows = new ArrayCollection();
         $this->episodes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->genres = new ArrayCollection();
         $this->friends = new ArrayCollection();
+        $this->hasFriends = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -318,6 +324,26 @@ class User implements UserInterface
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    public function addGenre($genre)
+    {
+        $this->genres->add($genre);
+        return $this->genres;
+    }
+
+    public function removeGenre($genre)
+    {
+        $this->genres->removeElement($genre);
+        return $this->genres;
+    }
+
+    /**
      * @return mixed
      */
     public function getFriends()
@@ -335,6 +361,26 @@ class User implements UserInterface
     {
         $this->friends->removeElement($user);
         return $this->friends;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasFriends()
+    {
+        return $this->hasFriends;
+    }
+
+    public function addHasFriends($user)
+    {
+        $this->hasFriends->add($user);
+        return $this->hasFriends;
+    }
+
+    public function removeHasFriends($user)
+    {
+        $this->hasFriends->removeElement($user);
+        return $this->hasFriends;
     }
 
 }

@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Friends;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,11 +59,15 @@ class FriendController extends Controller
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository(User::class)->find($user);
 
-            $this->getUser()->addFriends($user);
+            $friend = new Friends();
+            $friend->setUser($this->getUser());
+            $friend->setFriend($user);
+            $this->getUser()->addHasFriends($friend);
+            $user->addFriends($friend);
 
-            $em = $this->getDoctrine()->getManager();
-
+            $em->persist($friend);
             $em->persist($this->getUser());
+            $em->persist($user);
             $em->flush();
 
             return new JsonResponse([
@@ -87,12 +92,18 @@ class FriendController extends Controller
         $user = $request->request->get("friend");
 
         if(!is_null($user)){
-            if(in_array($user, $this->getUser()->getFriends()->toArray())){
-                $this->getUser()->removeFriends($user);
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->find($user);
 
-                $em = $this->getDoctrine()->getManager();
+            $friend = $em->getRepository(Friends::class)->findBy(['user' => $this->getUser()->getId(), 'friend' => $user->getId()]);
+            if(!is_null($friend) && count($friend) > 0){
+
+                $user->removeFriends($friend[0]);
+                $this->getUser()->removeHasFriends($friend[0]);
 
                 $em->persist($this->getUser());
+                $em->persist($user);
+                $em->remove($friend[0]);
                 $em->flush();
 
                 return new JsonResponse([

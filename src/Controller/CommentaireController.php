@@ -12,7 +12,6 @@ namespace App\Controller;
 use App\Entity\Commentaire;
 use App\Entity\Episode;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

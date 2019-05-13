@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Genre;
 use App\Entity\User;
 use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
@@ -92,6 +93,7 @@ class UserController extends Controller
                 if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
 
                     $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
+                    $request->request->add(['id' => $user->getId() ]);
 
                     return $guardHandler->authenticateUserAndHandleSuccess(
                         $user,          // the User object you just created
@@ -145,7 +147,8 @@ class UserController extends Controller
 
                     return new JsonResponse([
                         'code' => 'succes',
-                        'tokenJWT' => $this->getTokenUser($user)
+                        'tokenJWT' => $this->getTokenUser($user),
+                        'id' => $user->getId()
                     ]);
                 }
 
@@ -191,6 +194,11 @@ class UserController extends Controller
 
             if($this->getUser()->getId() != $user->getId()){
                 $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
+            }
+
+            /** @var Genre $genre */
+            foreach ($user->getGenres() as $genre){
+                $res[$user->getId()]['genre'][$genre->getId()] = $genre->getName();
             }
 
             return new JsonResponse([
