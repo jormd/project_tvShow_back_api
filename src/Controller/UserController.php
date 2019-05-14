@@ -201,6 +201,11 @@ class UserController extends Controller
                 $res[$user->getId()]['genre'][$genre->getId()] = $genre->getName();
             }
 
+            $genreTvShows = $em->getRepository(Genre::class)->findGenreTvShow($user->getId());
+            foreach ($genreTvShows as $genre){
+                $res[$user->getId()]['genreTvSHow'][$genre->getId()] = $genre->getName();
+            }
+
             return new JsonResponse([
                 'code' => 'success',
                 'content' => $res
