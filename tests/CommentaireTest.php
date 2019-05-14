@@ -15,6 +15,8 @@ use App\Controller\TvShowController;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -81,7 +83,7 @@ class CommentaireTest extends WebTestCase
     public function testAddCommntaireSuccess()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -116,7 +118,7 @@ class CommentaireTest extends WebTestCase
     public function testRemoveCommentaireSuccess()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 

@@ -10,6 +10,8 @@ namespace App\Tests;
 
 
 use App\Controller\UserController;
+use App\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +30,9 @@ class UserTest extends WebTestCase
 
     private $encoder;
 
+    /** @var EntityManager */
+    private $entityManager;
+
     protected function setUp()
     {
         $this->client = self::createClient();
@@ -38,11 +43,11 @@ class UserTest extends WebTestCase
         $this->encoder->method('encodePassword')->willReturn('test');
 
 
-        $entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
+        $this->entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
 
         // Run the schema update tool using our entity metadata
-        $metadatas = $entityManager->getMetadataFactory()->getAllMetadata();
-        $schemaTool = new SchemaTool($entityManager);
+        $metadatas = $this->entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($this->entityManager);
         $schemaTool->dropDatabase();
         $schemaTool->updateSchema($metadatas);
     }
@@ -82,6 +87,7 @@ class UserTest extends WebTestCase
 
         $res = json_decode($json->getContent(), true);
 
+        $this->assertEquals(1, count($this->entityManager->getRepository(User::class)->findAll()));
 
         $this->assertEquals("success", $res['code']);
         $this->assertEquals("l'utilisateur à bien été crée", $res['message']);

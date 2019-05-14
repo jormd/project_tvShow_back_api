@@ -76,7 +76,7 @@ class TvShowTest extends WebTestCase
     public function testAddSerieNotExistInBDD()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->assertEquals(0, count($this->entityManager->getRepository(TvShow::class)->findAll()));
 
@@ -88,7 +88,7 @@ class TvShowTest extends WebTestCase
     public function testAddSerieExistInBDD()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -103,13 +103,13 @@ class TvShowTest extends WebTestCase
     public function testAddNewSerieInBDD()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
         $this->assertEquals(1, count($this->entityManager->getRepository(TvShow::class)->findAll()));
 
-        $request->request->add(['serie' => ['id' => 150, 'name' => 'shameless']]);
+        $request->request->add(['serie' => ['id' => 150, 'name' => 'shameless', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -119,7 +119,7 @@ class TvShowTest extends WebTestCase
     public function testRemoveSerieInBDD()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 
@@ -133,7 +133,7 @@ class TvShowTest extends WebTestCase
     public function testRemoveSerieInBDDWithManyUser()
     {
         $request = new Request();
-        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl']]);
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
 
         $this->tvShow->followTvShow($request);
 

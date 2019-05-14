@@ -52,7 +52,7 @@ class SearchTvShowController extends Controller
     /**
      * Méthode de recherché des séries par rapport à une recherche
      *
-     * @Rest\Get("/api/search")
+     * @Rest\Post("/api/search")
      * @param Request $request
      * @return JsonResponse
      */
@@ -87,6 +87,106 @@ class SearchTvShowController extends Controller
     {
         $res = $this->callApi('schedule/full');
 
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * Recherche de la série par son id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchTvShowById($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('shows/'.$tv);
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * Recherche des saisons d'une série par son id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchSeasonTvShowById($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('shows/'.$tv.'/seasons');
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * Recherche des épisodes par saison
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function searchEpisodeBySeason($tv = null)
+    {
+        $res = false;
+
+        if(!is_null($tv)){
+            $res = $this->callApi('seasons/'.$tv.'/episodes');
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    /**
+     * info épisode
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function infoEpisode($serie = null, $saison = null, $episode = null)
+    {
+        $res = false;
+
+        if(!is_null($serie) && !is_null($saison) && !is_null($episode)){
+            $res = $this->callApi('shows/'.$serie.'/episodebynumber?season='.$saison.'&number='.$episode);
+        }
 
         if(is_bool($res) && !$res){
             return new JsonResponse([

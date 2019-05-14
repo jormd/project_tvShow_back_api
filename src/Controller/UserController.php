@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Genre;
 use App\Entity\User;
 use App\form\data\UserData;
 use App\form\type\RegistrationPersoFormType;
@@ -92,6 +93,8 @@ class UserController extends Controller
                 if($passwordEncoder->isPasswordValid($user, $request->request->get('password'))){
 
                     $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
+                    $request->request->add(['id' => $user->getId() ]);
+                    $request->request->add(['nom' => $user->getName() ]);
 
                     return $guardHandler->authenticateUserAndHandleSuccess(
                         $user,          // the User object you just created
@@ -145,7 +148,9 @@ class UserController extends Controller
 
                     return new JsonResponse([
                         'code' => 'succes',
-                        'tokenJWT' => $this->getTokenUser($user)
+                        'tokenJWT' => $this->getTokenUser($user),
+                        'id' => $user->getId(),
+                        'nom' => $user->getName()
                     ]);
                 }
 
@@ -170,5 +175,46 @@ class UserController extends Controller
 
 
         return $jwtManager->create($user);
+    }
+
+    /**
+     * @Rest\Post("/api/profile")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function profileUser(Request $request)
+    {
+        $user = $request->request->get("user");
+
+        if(!is_null($user)){
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $em->getRepository(User::class)->find($user);
+
+            $res[$user->getId()]['name'] = $user->getName();
+            $res[$user->getId()]['id'] = $user->getId();
+
+            if($this->getUser()->getId() != $user->getId()){
+                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
+            }
+
+            /** @var Genre $genre */
+            foreach ($user->getGenres() as $genre){
+                $res[$user->getId()]['genre'][$genre->getId()] = $genre->getName();
+            }
+
+            $genreTvShows = $em->getRepository(Genre::class)->findGenreTvShow($user->getId());
+            foreach ($genreTvShows as $genre){
+                $res[$user->getId()]['genreTvSHow'][$genre->getId()] = $genre->getName();
+            }
+
+            return new JsonResponse([
+                'code' => 'success',
+                'content' => $res
+            ]);
+        }
+        return new JsonResponse([
+            'code' => 'error',
+        ]);
     }
 }
