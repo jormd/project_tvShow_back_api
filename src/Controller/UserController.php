@@ -94,6 +94,7 @@ class UserController extends Controller
 
                     $request->request->add(['tokenJWT' => $this->getTokenUser($user) ]);
                     $request->request->add(['id' => $user->getId() ]);
+                    $request->request->add(['nom' => $user->getName() ]);
 
                     return $guardHandler->authenticateUserAndHandleSuccess(
                         $user,          // the User object you just created
@@ -148,7 +149,8 @@ class UserController extends Controller
                     return new JsonResponse([
                         'code' => 'succes',
                         'tokenJWT' => $this->getTokenUser($user),
-                        'id' => $user->getId()
+                        'id' => $user->getId(),
+                        'nom' => $user->getName()
                     ]);
                 }
 
