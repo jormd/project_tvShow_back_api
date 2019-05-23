@@ -27,7 +27,7 @@ Mardi 23 avril : https://www.youtube.com/watch?v=bdK83ef0JJ8&feature=youtu.be
 - [X] mise en place du design du front-end
 - [X] déploiement continue (back-end + front-end) --> heroku
 
-Jeudi 23 Mai :
+Jeudi 23 Mai : https://www.youtube.com/watch?v=Rvzv8XL22sU&feature=youtu.be
 - [X] peaufinage des tests unitaires
 - [X] appel des méthodes d’api de l’application
 - [X] ajout d’ami sur l’application 
