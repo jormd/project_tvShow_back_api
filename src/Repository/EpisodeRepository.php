@@ -28,4 +28,15 @@ class EpisodeRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getArrayResult();
     }
+
+    public function countEpisodeSeeUser(User $user)
+    {
+        $query = $this->createQueryBuilder('episode');
+
+        $query->select("count(episode.id)")
+            ->innerJoin('episode.users', 'user', Join::WITH, 'user.id = :user')
+            ->setParameter('user', $user->getId());
+
+        return $query->getQuery()->getSingleResult();
+    }
 }
