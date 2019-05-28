@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\Commentaire;
 use App\Entity\Episode;
+use App\Entity\TvShow;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -171,6 +172,38 @@ class EpisodeController extends Controller
         return new JsonResponse([
             'code' => 'success',
             'content' => 'l\'épisode à été retirer de votre compte'
+        ]);
+    }
+
+    /**
+     * @Rest\Post("/api/next/episode")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function nextAllEpisodes(Request $request)
+    {
+        $tvShows = $this->getDoctrine()->getRepository(TvShow::class)->findTvShowForUser($this->getUser());
+        $resultat = [];
+
+        foreach ($tvShows as $tvShow){
+            $res = $this->forward('App\Controller\SearchTvShowController::nextEpisode', ['tvshow' => $tvShow['idApi']]);
+            $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+            if(isset($res["_embedded"])){
+                $next = $res["_embedded"]['nextepisode'];
+
+                $resultat[$tvShow->getId()]['idEpisode'] = $next['id'];
+                $resultat[$tvShow->getId()]['name'] = $next['name'];
+                $resultat[$tvShow->getId()]['summary'] = $next['summary'];
+                $resultat[$tvShow->getId()]['date'] = $next['airdate'];
+                $resultat[$tvShow->getId()]['season'] = $next['season'];
+                $resultat[$tvShow->getId()]['episode'] = $next['number'];
+            }
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $resultat
         ]);
     }
 }
