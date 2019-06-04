@@ -209,6 +209,12 @@ class UserController extends Controller
                 $res[$user->getId()]['genreTvSHow'][$genre->getId()] = $genre->getName();
             }
 
+            $json = $this->statistiqueTimeEpisode();
+            $statisque = json_decode($json->getContent(), true);
+
+            $res[$user->getId()]['nbEpisodeVue'] = $statisque['content']['nbEpisode'];
+            $res[$user->getId()]['time'] = $statisque['content']['time'];
+
             return new JsonResponse([
                 'code' => 'success',
                 'content' => $res
@@ -221,9 +227,8 @@ class UserController extends Controller
 
     /**
      * @Rest\Post("/api/statistique/episode")
-     * @param Request $request
      */
-    public function statistiqueTimeEpisode(Request $request)
+    public function statistiqueTimeEpisode()
     {
         $nbEpisodeSee = $this->getDoctrine()->getRepository(Episode::class)->countEpisodeSeeUser($this->getUser());
 
