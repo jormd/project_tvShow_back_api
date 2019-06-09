@@ -35,7 +35,7 @@ Jeudi 23 Mai : https://www.youtube.com/watch?v=Rvzv8XL22sU&feature=youtu.be
 - [X] sauvegarde des genres des séries les plus récurrent
 
 Vendredi 21 Juin :
-- [ ] liste des prochain épisodes
-- [ ] statistique (épisode vues, genre suivie)
+- [X] liste des prochain épisodes
+- [X] statistique (épisode vues, genre suivie)
 - [ ] recherche de séries par rapport aux genre qu'a renseigné l'utilisateur + les séries qu'il suit
 
