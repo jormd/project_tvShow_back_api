@@ -200,4 +200,24 @@ class SearchTvShowController extends Controller
         ]);
     }
 
+    public function nextEpisode($tvshow = null)
+    {
+        $res = false;
+
+        if(!is_null($tvshow)){
+            $res = $this->callApi('shows/'.$tvshow.'?embed=nextepisode');
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
 }
