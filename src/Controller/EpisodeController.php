@@ -36,9 +36,7 @@ class EpisodeController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-        $hasSerie = $user->getTvShows()->filter(function ($show) use ($episodeReq){
-            return $show->getIdApi() == $episodeReq['idSerie'];
-        });
+        $hasSerie = $em->getRepository(TvShow::class)->findTvShowByUserAndId($user, $episodeReq['idSerie']);
 
         if(count($hasSerie) == 0){
             return new JsonResponse([
@@ -192,12 +190,15 @@ class EpisodeController extends Controller
             if(isset($res["_embedded"])){
                 $next = $res["_embedded"]['nextepisode'];
 
-                $resultat[$tvShow->getId()]['idEpisode'] = $next['id'];
-                $resultat[$tvShow->getId()]['name'] = $next['name'];
-                $resultat[$tvShow->getId()]['summary'] = $next['summary'];
-                $resultat[$tvShow->getId()]['date'] = $next['airdate'];
-                $resultat[$tvShow->getId()]['season'] = $next['season'];
-                $resultat[$tvShow->getId()]['episode'] = $next['number'];
+                $resultat[$tvShow['id']]['idEpisode'] = $next['id'];
+                $resultat[$tvShow['id']]['name'] = $next['name'];
+                $resultat[$tvShow['id']]['summary'] = $next['summary'];
+                $resultat[$tvShow['id']]['date'] = $next['airdate'];
+                $resultat[$tvShow['id']]['season'] = $next['season'];
+                $resultat[$tvShow['id']]['episode'] = $next['number'];
+                $resultat[$tvShow['id']]['idSerie'] = $res['id'];
+                $resultat[$tvShow['id']]['nameSerie'] = $res['name'];
+                $resultat[$tvShow['id']]['image'] = $res['image']['original'];
             }
         }
 
