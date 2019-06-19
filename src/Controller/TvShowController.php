@@ -208,4 +208,36 @@ class TvShowController extends Controller
             $em->persist($entityGenre);
         }
     }
+
+    /**
+     * @Rest\Post("/api/searchbygenre")
+     * @return JsonResponse
+     */
+    public function searchTvShowByGenreUser()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $genresObj = $user->getGenres();
+
+        $genres = [];
+
+        /** @var Genre $genreObj */
+        foreach ($genresObj as $genreObj){
+            if($genreObj->getIdApi() != 0){
+                $genres[] = $genreObj->getIdApi();
+            }
+        }
+
+        var_dump($genres);
+
+        //ajout genres
+        $res = $this->forward('App\Controller\SearchTvShowController::searchEpisodeGenre', ['genres' => $genres]);
+        $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
 }

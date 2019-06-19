@@ -20,6 +20,11 @@ class Genre
     private $id;
 
     /**
+     * @ORM\Column(name="idApi", type="integer")
+     */
+    private $idApi;
+
+    /**
      * @ORM\Column(name="nom", type="string")
      */
     private $name;
@@ -105,5 +110,21 @@ class Genre
     {
         $this->tvShow->removeElement($tvShow);
         return $this->tvShow;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdApi()
+    {
+        return $this->idApi;
+    }
+
+    /**
+     * @param mixed $idApi
+     */
+    public function setIdApi($idApi): void
+    {
+        $this->idApi = $idApi;
     }
 }
