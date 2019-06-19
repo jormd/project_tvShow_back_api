@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Episode;
 use App\Entity\Genre;
 use App\Entity\User;
 use App\form\data\UserData;
@@ -208,6 +209,12 @@ class UserController extends Controller
                 $res[$user->getId()]['genreTvSHow'][$genre->getId()] = $genre->getName();
             }
 
+            $json = $this->statistiqueTimeEpisode();
+            $statisque = json_decode($json->getContent(), true);
+
+            $res[$user->getId()]['nbEpisodeVue'] = $statisque['content']['nbEpisode'];
+            $res[$user->getId()]['time'] = $statisque['content']['time'];
+
             return new JsonResponse([
                 'code' => 'success',
                 'content' => $res
@@ -215,6 +222,30 @@ class UserController extends Controller
         }
         return new JsonResponse([
             'code' => 'error',
+        ]);
+    }
+
+    /**
+     * @Rest\Post("/api/statistique/episode")
+     */
+    public function statistiqueTimeEpisode()
+    {
+        $nbEpisodeSee = $this->getDoctrine()->getRepository(Episode::class)->countEpisodeSeeUser($this->getUser());
+
+        $time = sprintf('%02d:%02d', 0, 0);
+        if($nbEpisodeSee > 0){
+            $value = ((int)$nbEpisodeSee[1] * 40);
+            $hours = floor($value / 60);
+            $minutes = ($value % 60);
+            $time = sprintf('%02d:%02d', $hours, $minutes);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => [
+                'nbEpisode' => $nbEpisodeSee[1],
+                'time' => $time
+            ]
         ]);
     }
 }

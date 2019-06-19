@@ -9,12 +9,15 @@
 namespace App\Tests;
 
 
+use App\Controller\EpisodeController;
+use App\Controller\TvShowController;
 use App\Controller\UserController;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserTest extends WebTestCase
@@ -33,12 +36,36 @@ class UserTest extends WebTestCase
     /** @var EntityManager */
     private $entityManager;
 
+    /** @var TvShowController */
+    private $tvShow;
+
+    /** @var EpisodeController */
+    private $episode;
+
     protected function setUp()
     {
         $this->client = self::createClient();
+
+        $user = new User();
+        $user->setEmail('test@email.com');
+        $user->setName('test');
+        $user->setLastname('aaa');
+        $user->setPassword('test');
+        $user->setCoGoogle(false);
+
+        $mockUser = $this->createMock(TokenInterface::class);
+        $mockUser->method('getUser')->willReturn($user);
+        $this->client->getContainer()->get('security.token_storage')->setToken($mockUser);
+
         $this->userController = new UserController();
+        $this->tvShow = new TvShowController();
+        $this->episode = new EpisodeController();
+
         $this->request = new Request();
         $this->userController->setContainer($this->client->getContainer());
+        $this->tvShow->setContainer($this->client->getContainer());
+        $this->tvShow->setContainer($this->client->getContainer());
+
         $this->encoder = $this->createMock(UserPasswordEncoder::class);
         $this->encoder->method('encodePassword')->willReturn('test');
 
@@ -118,6 +145,26 @@ class UserTest extends WebTestCase
         $this->assertEquals("error", $res['code']);
         $this->assertEquals("MDP pas sécuriser", $res['message']);
     }
+
+/*    public function testStatistiqueTime()
+    {
+        $request = new Request();
+        $request->request->add(['serie' => ['id' => 192, 'name' => 'girl', 'test' => true]]);
+
+        $this->tvShow->followTvShow($request);
+
+        $request2 = new Request();
+        $request2->request->add(['episode' => ['idSerie' => 192, 'idEpisode' => 530411]]);
+
+        $json = $this->userController->statistiqueTimeEpisode(new Request());
+        $res = json_decode($json->getContent(), true);
+
+        var_dump($res['content']);die();
+
+        $this->assertEquals('success', $res['code']) ;
+        $this->assertEquals(1, $res['content']['nbEpisode']) ;
+        $this->assertEquals(40, $res['content']['time']) ;
+    }*/
 //
 //    public function testGetTokenUser()
 //    {
