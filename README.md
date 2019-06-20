@@ -37,5 +37,5 @@ Jeudi 23 Mai : https://www.youtube.com/watch?v=Rvzv8XL22sU&feature=youtu.be
 Vendredi 21 Juin :
 - [X] liste des prochain épisodes
 - [X] statistique (épisode vues, genre suivie)
-- [ ] recherche de séries par rapport aux genre qu'a renseigné l'utilisateur + les séries qu'il suit
+- [X] recherche de séries par rapport aux genre qu'a renseigné l'utilisateur + les séries qu'il suit
 
