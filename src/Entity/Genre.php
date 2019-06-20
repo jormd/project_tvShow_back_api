@@ -20,7 +20,7 @@ class Genre
     private $id;
 
     /**
-     * @ORM\Column(name="idApi", type="integer")
+     * @ORM\Column(name="idApi", type="integer", options={"default":0})
      */
     private $idApi;
 

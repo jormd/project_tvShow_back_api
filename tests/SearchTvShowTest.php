@@ -34,6 +34,7 @@ class SearchTvShowTest extends WebTestCase
 
         $externalApi = new ExternalApi();
         $externalApi->setUrl('http://api.tvmaze.com/');
+        $externalApi->setToken('');
 
         $entityManager->persist($externalApi);
         $entityManager->flush();
