@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\Episode;
+use App\Entity\Friends;
 use App\Entity\Genre;
 use App\Entity\User;
 use App\form\data\UserData;
@@ -196,7 +197,15 @@ class UserController extends Controller
             $res[$user->getId()]['id'] = $user->getId();
 
             if($this->getUser()->getId() != $user->getId()){
-                $res[$user->getId()]['suivre'] = !is_bool($this->getUser()->getFriends()) && in_array($user->getId(), $this->getUser()->getFriends()->toArray()) ? true : false;
+                if(!is_bool($this->getUser()->getHasFriends())){
+                    $res[$user->getId()]['suivre'] = false;
+                    /** @var Friends $friend */
+                    foreach ($this->getUser()->getHasFriends() as $friend){
+                        if($friend->getFriend()->getId() == $user->getId()){
+                            $res[$user->getId()]['suivre'] = true;
+                        }
+                    }
+                }
             }
 
             /** @var Genre $genre */
