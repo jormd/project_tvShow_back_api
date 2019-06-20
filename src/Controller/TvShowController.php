@@ -232,6 +232,20 @@ class TvShowController extends Controller
                 $genres[] = $genreObj->getIdApi();
             }
         }
+
+
+        $em = $this->getDoctrine();
+
+        $genreTvShows = $em->getRepository(Genre::class)->findGenreTvShow($user->getId());
+
+        /** @var Genre $genre */
+        foreach ($genreTvShows as $genre){
+            if(!in_array($genre->getIdApi(), $genres)){
+                if($genre->getIdApi() != 0) {
+                    $genres[] = $genre->getIdApi();
+                }
+            }
+        }
         //ajout genres
         $res = $this->forward('App\Controller\SearchTvShowController::searchEpisodeGenre', ['genres' => $genres]);
         $res = json_decode(json_decode($res->getContent(), true)['content'], true);
