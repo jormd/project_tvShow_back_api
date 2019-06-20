@@ -42,10 +42,14 @@ class GenreController extends Controller
                 if(count($entityGenre) == 0){
                     $entityGenre = new Genre();
                     $entityGenre->setName($genre);
+                    $entityGenre->setIdApi(0);
                     $em->persist($entityGenre);
                 }
                 else{
                     $entityGenre = $entityGenre[0];
+                    if(is_null($entityGenre->getIdApi())){
+                        $entityGenre->setIdApi(0);
+                    }
                 }
 
                 /** @var User $user */
