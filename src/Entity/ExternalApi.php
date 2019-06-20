@@ -30,6 +30,11 @@ class ExternalApi
     private $url;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $token;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -60,5 +65,23 @@ class ExternalApi
     {
         $this->url = $url;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
+    }
+
+
 
 }

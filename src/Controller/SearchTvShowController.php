@@ -26,10 +26,10 @@ class SearchTvShowController extends Controller
      * @param $data
      * @return JsonResponse
      */
-    private function callApi($route, $data = null)
+    private function callApi($type, $route, $data = null)
     {
         /** @var ExternalApi $externalAPI */
-        $externalAPI = $this->getDoctrine()->getManager()->getRepository(ExternalApi::class)->findAll()[0];
+        $externalAPI = $this->getDoctrine()->getManager()->getRepository(ExternalApi::class)->findAll()[$type];
 
         $curl = curl_init();
 
@@ -37,8 +37,12 @@ class SearchTvShowController extends Controller
             curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route."?".$data[0][0]."=".$data[0][1]);
         }
         else{
-            curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route);
-
+            if($type == 0){
+                curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route);
+            }
+            else{
+                curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route.'&api_key='.$externalAPI->getToken());
+            }
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
@@ -61,7 +65,7 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($request->get('tv'))){
-            $res = $this->callApi('search/shows', [0 => ['q', $request->get('tv')]]);
+            $res = $this->callApi(0, 'search/shows', [0 => ['q', $request->get('tv')]]);
         }
 
         if(is_bool($res) && !$res){
@@ -85,7 +89,7 @@ class SearchTvShowController extends Controller
      */
     public function searchSchedule(Request $request)
     {
-        $res = $this->callApi('schedule/full');
+        $res = $this->callApi(0, 'schedule/full');
 
 
         if(is_bool($res) && !$res){
@@ -110,7 +114,7 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($tv)){
-            $res = $this->callApi('shows/'.$tv);
+            $res = $this->callApi(0, 'shows/'.$tv);
         }
 
         if(is_bool($res) && !$res){
@@ -135,7 +139,7 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($tv)){
-            $res = $this->callApi('shows/'.$tv.'/seasons');
+            $res = $this->callApi(0, 'shows/'.$tv.'/seasons');
         }
 
         if(is_bool($res) && !$res){
@@ -160,7 +164,7 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($tv)){
-            $res = $this->callApi('seasons/'.$tv.'/episodes');
+            $res = $this->callApi(0, 'seasons/'.$tv.'/episodes');
         }
 
         if(is_bool($res) && !$res){
@@ -185,7 +189,7 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($serie) && !is_null($saison) && !is_null($episode)){
-            $res = $this->callApi('shows/'.$serie.'/episodebynumber?season='.$saison.'&number='.$episode);
+            $res = $this->callApi(0, 'shows/'.$serie.'/episodebynumber?season='.$saison.'&number='.$episode);
         }
 
         if(is_bool($res) && !$res){
@@ -205,7 +209,27 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($tvshow)){
-            $res = $this->callApi('shows/'.$tvshow.'?embed=nextepisode');
+            $res = $this->callApi(0, 'shows/'.$tvshow.'?embed=nextepisode');
+        }
+
+        if(is_bool($res) && !$res){
+            return new JsonResponse([
+                'code' => 'error'
+            ]);
+        }
+
+        return new JsonResponse([
+            'code' => 'success',
+            'content' => $res
+        ]);
+    }
+
+    public function searchEpisodeGenre($genres = null)
+    {
+        $res = false;
+
+        if(!is_null($genres)){
+            $res = $this->callApi(1, 'discover/tv?with_genres='.implode(',', $genres));
         }
 
         if(is_bool($res) && !$res){
