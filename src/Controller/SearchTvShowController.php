@@ -37,7 +37,7 @@ class SearchTvShowController extends Controller
             curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route."?".$data[0][0]."=".$data[0][1]);
         }
         else{
-            if(type == 0){
+            if($type == 0){
                 curl_setopt($curl, CURLOPT_URL, $externalAPI->getUrl().$route);
             }
             else{
@@ -229,10 +229,8 @@ class SearchTvShowController extends Controller
         $res = false;
 
         if(!is_null($genres)){
-            $res = $this->callApi(1, 'discover/tv/?with_genres='.implode(',', $genres));
+            $res = $this->callApi(1, 'discover/tv?with_genres='.implode(',', $genres));
         }
-
-        var_dump($res);
 
         if(is_bool($res) && !$res){
             return new JsonResponse([

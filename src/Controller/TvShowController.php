@@ -229,15 +229,14 @@ class TvShowController extends Controller
             }
         }
 
-        var_dump($genres);
-
         //ajout genres
         $res = $this->forward('App\Controller\SearchTvShowController::searchEpisodeGenre', ['genres' => $genres]);
+
         $res = json_decode(json_decode($res->getContent(), true)['content'], true);
 
         return new JsonResponse([
             'code' => 'success',
-            'content' => $res
+            'content' => $res['results']
         ]);
     }
 }
