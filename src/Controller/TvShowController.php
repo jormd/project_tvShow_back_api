@@ -243,7 +243,7 @@ class TvShowController extends Controller
 
                 $arrayResult[$resOne['id']]['show']["id"] = $resOne["id"];
                 $arrayResult[$resOne['id']]['show']["name"] = $resOne["name"];
-                $arrayResult[$resOne['id']]['show']["image"]['originalx'] = $resOne["image"]["original"];
+                $arrayResult[$resOne['id']]['show']["image"]['original'] = $resOne["image"]["original"];
                 $arrayResult[$resOne['id']]['show']["summary"] = $resOne["summary"];
             }
         }
