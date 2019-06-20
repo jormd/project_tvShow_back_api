@@ -228,15 +228,29 @@ class TvShowController extends Controller
                 $genres[] = $genreObj->getIdApi();
             }
         }
-
         //ajout genres
         $res = $this->forward('App\Controller\SearchTvShowController::searchEpisodeGenre', ['genres' => $genres]);
-
         $res = json_decode(json_decode($res->getContent(), true)['content'], true);
+
+        $arrayResult = [];
+        foreach ($res['results'] as $result){
+
+            $resApi = $this->forward('App\Controller\SearchTvShowController::searchSpecifyTvShow', ['tv' => $result['original_name']]);
+            $resApi = json_decode(json_decode($resApi->getContent(), true)['content'], true);
+
+            foreach ($resApi as $resOne){
+                $resOne = $resOne['show'];
+
+                $arrayResult[$resOne['id']]['show']["id"] = $resOne["id"];
+                $arrayResult[$resOne['id']]['show']["name"] = $resOne["name"];
+                $arrayResult[$resOne['id']]['show']["image"]['originalx'] = $resOne["image"]["original"];
+                $arrayResult[$resOne['id']]['show']["summary"] = $resOne["summary"];
+            }
+        }
 
         return new JsonResponse([
             'code' => 'success',
-            'content' => $res['results']
+            'content' => $arrayResult
         ]);
     }
 }
